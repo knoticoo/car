@@ -400,11 +400,6 @@ function initializeApp() {
         });
     }
 
-    // Set up search functionality
-    const globalSearch = document.getElementById('global-search');
-    if (globalSearch) {
-        globalSearch.addEventListener('input', handleGlobalSearch);
-    }
 
     const errorSearch = document.getElementById('error-search');
     if (errorSearch) {
@@ -755,50 +750,6 @@ function addToCart(partNumber) {
     }
 }
 
-function handleGlobalSearch(event) {
-    const searchTerm = event.target.value.toLowerCase();
-    if (searchTerm.length < 2) return;
-
-    // Search across all sections
-    const results = [];
-    
-    // Search error codes
-    Object.keys(errorCodes).forEach(category => {
-        errorCodes[category].forEach(code => {
-            if (code.code.toLowerCase().includes(searchTerm) ||
-                code.title.toLowerCase().includes(searchTerm) ||
-                code.description.toLowerCase().includes(searchTerm)) {
-                results.push({
-                    type: 'error-code',
-                    title: `${code.code} - ${code.title}`,
-                    description: code.description,
-                    section: 'error-codes'
-                });
-            }
-        });
-    });
-
-    // Search parts
-    Object.keys(partsCatalog).forEach(category => {
-        partsCatalog[category].forEach(part => {
-            if (part.name.toLowerCase().includes(searchTerm) ||
-                part.description.toLowerCase().includes(searchTerm)) {
-                results.push({
-                    type: 'part',
-                    title: part.name,
-                    description: part.description,
-                    section: 'parts'
-                });
-            }
-        });
-    });
-
-    // Display search results (simplified for now)
-    if (results.length > 0) {
-        console.log('Search results:', results);
-        // In a real app, you'd show these in a dropdown or results page
-    }
-}
 
 // Repair Instructions Data
 const repairInstructions = {
