@@ -375,7 +375,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function initializeApp() {
     // Check if mobile
-    isMobile = window.innerWidth <= 768;
+    isMobile = isMobileDevice();
     console.log('Mobile detection:', { isMobile, width: window.innerWidth });
     
     // Set up navigation
@@ -1101,14 +1101,14 @@ function calculateRepairCost(parts, labor) {
 }
 
 // Mobile Detection and Responsive Features
-function isMobile() {
+function isMobileDevice() {
     return window.innerWidth <= 768;
 }
 
 function setupMobileFeatures() {
     // Update mobile state
     const wasMobile = isMobile;
-    isMobile = window.innerWidth <= 768;
+    isMobile = isMobileDevice();
     
     console.log('Setting up mobile features:', { isMobile, wasMobile, width: window.innerWidth });
     
