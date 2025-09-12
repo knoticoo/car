@@ -211,13 +211,15 @@ const troubleshootingData = {
     }
 };
 
-// Parts Catalog
+// Parts Catalog (Latvian suppliers)
 const partsCatalog = {
     engine: [
         {
             name: "Масляный фильтр двигателя",
             partNumber: "MD360785",
-            price: 1200,
+            price: 15.50,
+            currency: "EUR",
+            supplier: "Auto Parts Latvia",
             description: "Оригинальный масляный фильтр для двигателя 4B11",
             category: "engine",
             difficulty: "Легко",
@@ -226,7 +228,9 @@ const partsCatalog = {
         {
             name: "Воздушный фильтр",
             partNumber: "MD360786",
-            price: 800,
+            price: 12.80,
+            currency: "EUR",
+            supplier: "Riga Auto Parts",
             description: "Воздушный фильтр салона Mitsubishi ASX",
             category: "engine",
             difficulty: "Легко",
@@ -235,31 +239,118 @@ const partsCatalog = {
         {
             name: "Свечи зажигания NGK",
             partNumber: "NGK-ILZKR7B-11",
-            price: 2500,
+            price: 28.90,
+            currency: "EUR",
+            supplier: "Daugavpils Auto",
             description: "Комплект свечей зажигания (4 шт.)",
             category: "engine",
             difficulty: "Легко",
             time: "30 минут"
+        },
+        {
+            name: "Ремень ГРМ",
+            partNumber: "GMB-6PK1230",
+            price: 45.60,
+            currency: "EUR",
+            supplier: "Liepaja Parts",
+            description: "Ремень газораспределительного механизма",
+            category: "engine",
+            difficulty: "Сложно",
+            time: "3 часа"
+        },
+        {
+            name: "Помпа водяная",
+            partNumber: "GMB-130-0110",
+            price: 78.40,
+            currency: "EUR",
+            supplier: "Ventspils Auto",
+            description: "Водяной насос системы охлаждения",
+            category: "engine",
+            difficulty: "Средне",
+            time: "2 часа"
         }
     ],
     brakes: [
         {
             name: "Тормозные колодки передние",
-            partNumber: "MB123456",
-            price: 3500,
-            description: "Комплект тормозных колодок передних колес",
+            partNumber: "BREMBO-P85001",
+            price: 65.20,
+            currency: "EUR",
+            supplier: "Riga Brake Parts",
+            description: "Комплект тормозных колодок передних колес BREMBO",
             category: "brakes",
             difficulty: "Средне",
             time: "1 час"
         },
         {
             name: "Тормозные диски передние",
-            partNumber: "MB123457",
-            price: 4500,
-            description: "Тормозные диски передних колес (2 шт.)",
+            partNumber: "BREMBO-09.A407.11",
+            price: 89.90,
+            currency: "EUR",
+            supplier: "Riga Brake Parts",
+            description: "Тормозные диски передних колес BREMBO (2 шт.)",
             category: "brakes",
             difficulty: "Средне",
             time: "1.5 часа"
+        },
+        {
+            name: "Тормозная жидкость",
+            partNumber: "DOT4-1L",
+            price: 8.50,
+            currency: "EUR",
+            supplier: "Auto Parts Latvia",
+            description: "Тормозная жидкость DOT4, 1 литр",
+            category: "brakes",
+            difficulty: "Легко",
+            time: "30 минут"
+        }
+    ],
+    suspension: [
+        {
+            name: "Амортизатор передний",
+            partNumber: "MONROE-G7554",
+            price: 125.80,
+            currency: "EUR",
+            supplier: "Riga Suspension",
+            description: "Передний амортизатор MONROE",
+            category: "suspension",
+            difficulty: "Средне",
+            time: "2 часа"
+        },
+        {
+            name: "Пружина передняя",
+            partNumber: "LESJOFORS-4015001",
+            price: 95.60,
+            currency: "EUR",
+            supplier: "Daugavpils Auto",
+            description: "Передняя пружина подвески LESJOFORS",
+            category: "suspension",
+            difficulty: "Сложно",
+            time: "3 часа"
+        }
+    ],
+    electrical: [
+        {
+            name: "Аккумулятор",
+            partNumber: "VARTA-E44",
+            price: 145.90,
+            currency: "EUR",
+            supplier: "Riga Battery Center",
+            description: "Аккумулятор 74Ah, 680A",
+            category: "electrical",
+            difficulty: "Легко",
+            time: "20 минут"
+        },
+        {
+            name: "Генератор",
+            partNumber: "VALEO-440120",
+            price: 285.50,
+            currency: "EUR",
+            supplier: "Liepaja Electrical",
+            description: "Генератор 120A VALEO",
+            category: "electrical",
+            difficulty: "Средне",
+            time: "2.5 часа"
         }
     ]
 };
@@ -267,6 +358,8 @@ const partsCatalog = {
 // Application State
 let currentSection = 'home';
 let currentUser = null;
+let isNavVisible = true;
+let isMobile = false;
 
 // Initialize Application
 document.addEventListener('DOMContentLoaded', function() {
@@ -277,6 +370,9 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initializeApp() {
+    // Check if mobile
+    isMobile = window.innerWidth <= 768;
+    
     // Set up navigation
     const navLinks = document.querySelectorAll('.nav-link');
     navLinks.forEach(link => {
@@ -284,8 +380,20 @@ function initializeApp() {
             e.preventDefault();
             const targetSection = link.getAttribute('href').substring(1);
             showSection(targetSection);
+            // Close mobile nav if open
+            if (isMobile) {
+                toggleMobileNav(false);
+            }
         });
     });
+
+    // Set up navigation toggle
+    const navToggle = document.getElementById('nav-toggle');
+    if (navToggle) {
+        navToggle.addEventListener('click', () => {
+            toggleMobileNav();
+        });
+    }
 
     // Set up search functionality
     const globalSearch = document.getElementById('global-search');
@@ -301,6 +409,39 @@ function initializeApp() {
     const errorCategory = document.getElementById('error-category');
     if (errorCategory) {
         errorCategory.addEventListener('change', filterErrorCodes);
+    }
+
+    // Set up scroll-based navigation hiding and back-to-top button
+    let lastScrollY = window.scrollY;
+    window.addEventListener('scroll', () => {
+        const currentScrollY = window.scrollY;
+        
+        // Only hide/show on certain sections
+        if (shouldHideNavOnScroll()) {
+            if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                // Scrolling down - hide nav
+                setNavVisibility(false);
+            } else if (currentScrollY < lastScrollY) {
+                // Scrolling up - show nav
+                setNavVisibility(true);
+            }
+        }
+        
+        // Show/hide back-to-top button
+        updateBackToTopButton(currentScrollY);
+        
+        lastScrollY = currentScrollY;
+    });
+
+    // Set up back-to-top button
+    const backToTopBtn = document.getElementById('back-to-top');
+    if (backToTopBtn) {
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
     }
 }
 
@@ -340,6 +481,9 @@ function showSection(sectionId) {
         }
     });
 
+    // Control navigation visibility based on section
+    updateNavVisibilityForSection(sectionId);
+
     // Load section-specific content
     switch(sectionId) {
         case 'error-codes':
@@ -351,6 +495,82 @@ function showSection(sectionId) {
         case 'parts':
             loadParts();
             break;
+    }
+}
+
+// Navigation visibility control functions
+function updateNavVisibilityForSection(sectionId) {
+    const header = document.querySelector('.header');
+    if (!header) return;
+
+    // Sections where navigation should be hidden
+    const hideNavSections = []; // No sections need to hide navigation now
+    
+    // Sections where navigation should be compact
+    const compactNavSections = ['error-codes', 'troubleshooting', 'parts'];
+    
+    // Reset classes
+    header.classList.remove('hidden', 'compact');
+    
+    if (hideNavSections.includes(sectionId)) {
+        header.classList.add('hidden');
+        isNavVisible = false;
+    } else if (compactNavSections.includes(sectionId)) {
+        header.classList.add('compact');
+        isNavVisible = true;
+    } else {
+        isNavVisible = true;
+    }
+}
+
+function setNavVisibility(visible) {
+    const header = document.querySelector('.header');
+    if (!header) return;
+    
+    if (visible) {
+        header.classList.remove('hidden');
+        isNavVisible = true;
+    } else {
+        header.classList.add('hidden');
+        isNavVisible = false;
+    }
+}
+
+function shouldHideNavOnScroll() {
+    // Only hide nav on scroll for certain sections
+    const scrollHideSections = ['error-codes', 'troubleshooting', 'parts'];
+    return scrollHideSections.includes(currentSection);
+}
+
+function toggleMobileNav(force = null) {
+    const nav = document.querySelector('.nav');
+    const navToggle = document.getElementById('nav-toggle');
+    
+    if (!nav || !navToggle) return;
+    
+    const isOpen = nav.classList.contains('mobile-open');
+    const shouldOpen = force !== null ? force : !isOpen;
+    
+    if (shouldOpen) {
+        nav.classList.add('mobile-open');
+        navToggle.classList.add('active');
+        navToggle.innerHTML = '<i class="fas fa-times"></i>';
+    } else {
+        nav.classList.remove('mobile-open');
+        navToggle.classList.remove('active');
+        navToggle.innerHTML = '<i class="fas fa-bars"></i>';
+    }
+}
+
+function updateBackToTopButton(scrollY) {
+    const backToTopBtn = document.getElementById('back-to-top');
+    if (!backToTopBtn) return;
+    
+    // Show button when scrolled down more than 300px
+    if (scrollY > 300) {
+        backToTopBtn.classList.add('visible');
+    } else {
+        backToTopBtn.classList.remove('visible');
     }
 }
 
@@ -485,7 +705,8 @@ function loadParts() {
         <div class="part-card">
             <h4>${part.name}</h4>
             <p class="part-number">Артикул: ${part.partNumber}</p>
-            <p class="price">${part.price.toLocaleString()} руб.</p>
+            <p class="supplier">Поставщик: ${part.supplier}</p>
+            <p class="price">${part.price.toFixed(2)} ${part.currency}</p>
             <p class="description">${part.description}</p>
             <div class="part-info">
                 <span class="difficulty">Сложность: ${part.difficulty}</span>
@@ -906,7 +1127,10 @@ function isMobile() {
 }
 
 function setupMobileFeatures() {
-    if (isMobile()) {
+    // Update mobile state
+    isMobile = isMobile();
+    
+    if (isMobile) {
         // Add mobile-specific features
         document.body.classList.add('mobile');
         
@@ -935,18 +1159,27 @@ function setupMobileFeatures() {
                 }
             }
         });
+    } else {
+        document.body.classList.remove('mobile');
+        // Close mobile nav if open
+        toggleMobileNav(false);
     }
 }
 
+// Handle window resize
+window.addEventListener('resize', () => {
+    setupMobileFeatures();
+});
+
 function navigateToNextSection() {
-    const sections = ['home', 'error-codes', 'troubleshooting', 'maintenance', 'repairs', 'parts', 'forum', 'account'];
+    const sections = ['home', 'error-codes', 'troubleshooting', 'maintenance', 'repairs', 'parts'];
     const currentIndex = sections.indexOf(currentSection);
     const nextIndex = (currentIndex + 1) % sections.length;
     showSection(sections[nextIndex]);
 }
 
 function navigateToPreviousSection() {
-    const sections = ['home', 'error-codes', 'troubleshooting', 'maintenance', 'repairs', 'parts', 'forum', 'account'];
+    const sections = ['home', 'error-codes', 'troubleshooting', 'maintenance', 'repairs', 'parts'];
     const currentIndex = sections.indexOf(currentSection);
     const prevIndex = currentIndex === 0 ? sections.length - 1 : currentIndex - 1;
     showSection(sections[prevIndex]);
@@ -984,4 +1217,4 @@ function updateMaintenanceHistory(history) {
     `).join('');
 }
 
-console.log('Mitsubishi ASX 2011 Helper Application loaded successfully!');
+console.log('Помощник загружен успешно!');
