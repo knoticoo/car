@@ -2,6 +2,9 @@
 // Modular application structure
 
 import { ErrorCodesComponent } from './components/errorCodes.js';
+import { TroubleshootingComponent } from './components/troubleshooting.js';
+import { MaintenanceComponent } from './components/maintenance.js';
+import { PartsComponent } from './components/parts.js';
 import { isMobileDevice, storage, notificationManager } from './utils/helpers.js';
 
 class MitsubishiASXApp {
@@ -37,6 +40,21 @@ class MitsubishiASXApp {
         // Initialize Error Codes Component
         this.components.errorCodes = new ErrorCodesComponent();
         this.components.errorCodes.init('error-codes-list');
+        
+        // Initialize Troubleshooting Component
+        this.components.troubleshooting = new TroubleshootingComponent();
+        this.components.troubleshooting.init('troubleshooting-content');
+        
+        // Initialize Maintenance Component
+        this.components.maintenance = new MaintenanceComponent();
+        this.components.maintenance.init('maintenance-schedule');
+        
+        // Initialize Parts Component
+        this.components.parts = new PartsComponent();
+        this.components.parts.init('parts-grid');
+        
+        // Make components globally accessible
+        window.partsComponent = this.components.parts;
     }
 
     setupEventListeners() {
@@ -195,37 +213,21 @@ class MitsubishiASXApp {
     }
 
     loadTroubleshooting() {
-        const content = document.getElementById('troubleshooting-content');
-        if (!content) return;
-
-        content.innerHTML = `
-            <div class="troubleshooting-intro">
-                <h3>Диагностика проблем</h3>
-                <p>Выберите категорию проблемы для получения пошаговой инструкции по диагностике и решению.</p>
-            </div>
-        `;
+        if (this.components.troubleshooting) {
+            this.components.troubleshooting.render();
+        }
     }
 
     loadParts() {
-        const container = document.getElementById('parts-grid');
-        if (!container) return;
-
-        container.innerHTML = `
-            <div class="parts-intro">
-                <h3>Каталог запчастей</h3>
-                <p>Поиск и заказ запчастей для Mitsubishi ASX 2011 от проверенных поставщиков в Латвии.</p>
-            </div>
-        `;
+        if (this.components.parts) {
+            this.components.parts.render();
+        }
     }
 
     loadMaintenance() {
-        const container = document.querySelector('.maintenance-schedule');
-        if (!container) return;
-
-        container.innerHTML = `
-            <h3>График обслуживания</h3>
-            <p>Регулярное техническое обслуживание поможет поддерживать ваш автомобиль в отличном состоянии.</p>
-        `;
+        if (this.components.maintenance) {
+            this.components.maintenance.render();
+        }
     }
 
     loadRepairs() {
@@ -236,6 +238,28 @@ class MitsubishiASXApp {
             <div class="repairs-intro">
                 <h3>Инструкции по ремонту</h3>
                 <p>Подробные пошаговые инструкции по ремонту различных систем автомобиля.</p>
+                <div class="repair-categories">
+                    <div class="repair-category" onclick="showRepairCategory('engine')">
+                        <i class="fas fa-cog"></i>
+                        <h3>Двигатель</h3>
+                        <span class="difficulty easy">Легко</span>
+                    </div>
+                    <div class="repair-category" onclick="showRepairCategory('transmission')">
+                        <i class="fas fa-cogs"></i>
+                        <h3>Трансмиссия</h3>
+                        <span class="difficulty medium">Средне</span>
+                    </div>
+                    <div class="repair-category" onclick="showRepairCategory('electrical')">
+                        <i class="fas fa-bolt"></i>
+                        <h3>Электрика</h3>
+                        <span class="difficulty easy">Легко</span>
+                    </div>
+                    <div class="repair-category" onclick="showRepairCategory('brakes')">
+                        <i class="fas fa-circle"></i>
+                        <h3>Тормоза</h3>
+                        <span class="difficulty medium">Средне</span>
+                    </div>
+                </div>
             </div>
         `;
     }
