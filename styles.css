@@ -956,9 +956,17 @@ button:hover {
         visibility: visible;
     }
     
-    
     .header .container {
         position: relative;
+        flex-wrap: nowrap;
+    }
+    
+    .logo {
+        flex: 1;
+    }
+    
+    .nav-toggle {
+        order: 2;
     }
 }
 

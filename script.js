@@ -368,6 +368,8 @@ document.addEventListener('DOMContentLoaded', function() {
     setupEventListeners();
     loadErrorCodes();
     loadParts();
+    setupMobileFeatures();
+    userAccount.loadCarInfo();
     console.log('App initialization complete');
 });
 
@@ -559,14 +561,14 @@ function toggleMobileNav(force = null) {
     const navToggle = document.getElementById('nav-toggle');
     
     if (!nav || !navToggle) {
-        console.log('Navigation elements not found');
+        console.log('Navigation elements not found', { nav: !!nav, navToggle: !!navToggle });
         return;
     }
     
     const isOpen = nav.classList.contains('mobile-open');
     const shouldOpen = force !== null ? force : !isOpen;
     
-    console.log('Toggling mobile nav:', { isOpen, shouldOpen, isMobile });
+    console.log('Toggling mobile nav:', { isOpen, shouldOpen, isMobile, windowWidth: window.innerWidth });
     
     if (shouldOpen) {
         nav.classList.add('mobile-open');
@@ -1105,7 +1107,10 @@ function isMobile() {
 
 function setupMobileFeatures() {
     // Update mobile state
+    const wasMobile = isMobile;
     isMobile = window.innerWidth <= 768;
+    
+    console.log('Setting up mobile features:', { isMobile, wasMobile, width: window.innerWidth });
     
     if (isMobile) {
         // Add mobile-specific features
@@ -1162,16 +1167,8 @@ function navigateToPreviousSection() {
     showSection(sections[prevIndex]);
 }
 
-// Initialize the application
+// Load maintenance history on initialization
 document.addEventListener('DOMContentLoaded', function() {
-    initializeApp();
-    setupEventListeners();
-    loadErrorCodes();
-    loadParts();
-    setupMobileFeatures();
-    userAccount.loadCarInfo();
-    
-    // Load maintenance history
     const history = userAccount.getMaintenanceHistory();
     if (history.length > 0) {
         updateMaintenanceHistory(history);
