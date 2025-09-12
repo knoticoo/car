@@ -267,6 +267,8 @@ const partsCatalog = {
 // Application State
 let currentSection = 'home';
 let currentUser = null;
+let isNavVisible = true;
+let isMobile = false;
 
 // Initialize Application
 document.addEventListener('DOMContentLoaded', function() {
@@ -277,6 +279,9 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initializeApp() {
+    // Check if mobile
+    isMobile = window.innerWidth <= 768;
+    
     // Set up navigation
     const navLinks = document.querySelectorAll('.nav-link');
     navLinks.forEach(link => {
@@ -284,8 +289,20 @@ function initializeApp() {
             e.preventDefault();
             const targetSection = link.getAttribute('href').substring(1);
             showSection(targetSection);
+            // Close mobile nav if open
+            if (isMobile) {
+                toggleMobileNav(false);
+            }
         });
     });
+
+    // Set up navigation toggle
+    const navToggle = document.getElementById('nav-toggle');
+    if (navToggle) {
+        navToggle.addEventListener('click', () => {
+            toggleMobileNav();
+        });
+    }
 
     // Set up search functionality
     const globalSearch = document.getElementById('global-search');
@@ -301,6 +318,39 @@ function initializeApp() {
     const errorCategory = document.getElementById('error-category');
     if (errorCategory) {
         errorCategory.addEventListener('change', filterErrorCodes);
+    }
+
+    // Set up scroll-based navigation hiding and back-to-top button
+    let lastScrollY = window.scrollY;
+    window.addEventListener('scroll', () => {
+        const currentScrollY = window.scrollY;
+        
+        // Only hide/show on certain sections
+        if (shouldHideNavOnScroll()) {
+            if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                // Scrolling down - hide nav
+                setNavVisibility(false);
+            } else if (currentScrollY < lastScrollY) {
+                // Scrolling up - show nav
+                setNavVisibility(true);
+            }
+        }
+        
+        // Show/hide back-to-top button
+        updateBackToTopButton(currentScrollY);
+        
+        lastScrollY = currentScrollY;
+    });
+
+    // Set up back-to-top button
+    const backToTopBtn = document.getElementById('back-to-top');
+    if (backToTopBtn) {
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
     }
 }
 
@@ -340,6 +390,9 @@ function showSection(sectionId) {
         }
     });
 
+    // Control navigation visibility based on section
+    updateNavVisibilityForSection(sectionId);
+
     // Load section-specific content
     switch(sectionId) {
         case 'error-codes':
@@ -351,6 +404,82 @@ function showSection(sectionId) {
         case 'parts':
             loadParts();
             break;
+    }
+}
+
+// Navigation visibility control functions
+function updateNavVisibilityForSection(sectionId) {
+    const header = document.querySelector('.header');
+    if (!header) return;
+
+    // Sections where navigation should be hidden
+    const hideNavSections = ['account']; // Add more sections as needed
+    
+    // Sections where navigation should be compact
+    const compactNavSections = ['error-codes', 'troubleshooting', 'parts'];
+    
+    // Reset classes
+    header.classList.remove('hidden', 'compact');
+    
+    if (hideNavSections.includes(sectionId)) {
+        header.classList.add('hidden');
+        isNavVisible = false;
+    } else if (compactNavSections.includes(sectionId)) {
+        header.classList.add('compact');
+        isNavVisible = true;
+    } else {
+        isNavVisible = true;
+    }
+}
+
+function setNavVisibility(visible) {
+    const header = document.querySelector('.header');
+    if (!header) return;
+    
+    if (visible) {
+        header.classList.remove('hidden');
+        isNavVisible = true;
+    } else {
+        header.classList.add('hidden');
+        isNavVisible = false;
+    }
+}
+
+function shouldHideNavOnScroll() {
+    // Only hide nav on scroll for certain sections
+    const scrollHideSections = ['error-codes', 'troubleshooting', 'parts'];
+    return scrollHideSections.includes(currentSection);
+}
+
+function toggleMobileNav(force = null) {
+    const nav = document.querySelector('.nav');
+    const navToggle = document.getElementById('nav-toggle');
+    
+    if (!nav || !navToggle) return;
+    
+    const isOpen = nav.classList.contains('mobile-open');
+    const shouldOpen = force !== null ? force : !isOpen;
+    
+    if (shouldOpen) {
+        nav.classList.add('mobile-open');
+        navToggle.classList.add('active');
+        navToggle.innerHTML = '<i class="fas fa-times"></i>';
+    } else {
+        nav.classList.remove('mobile-open');
+        navToggle.classList.remove('active');
+        navToggle.innerHTML = '<i class="fas fa-bars"></i>';
+    }
+}
+
+function updateBackToTopButton(scrollY) {
+    const backToTopBtn = document.getElementById('back-to-top');
+    if (!backToTopBtn) return;
+    
+    // Show button when scrolled down more than 300px
+    if (scrollY > 300) {
+        backToTopBtn.classList.add('visible');
+    } else {
+        backToTopBtn.classList.remove('visible');
     }
 }
 
@@ -906,7 +1035,10 @@ function isMobile() {
 }
 
 function setupMobileFeatures() {
-    if (isMobile()) {
+    // Update mobile state
+    isMobile = isMobile();
+    
+    if (isMobile) {
         // Add mobile-specific features
         document.body.classList.add('mobile');
         
@@ -935,8 +1067,17 @@ function setupMobileFeatures() {
                 }
             }
         });
+    } else {
+        document.body.classList.remove('mobile');
+        // Close mobile nav if open
+        toggleMobileNav(false);
     }
 }
+
+// Handle window resize
+window.addEventListener('resize', () => {
+    setupMobileFeatures();
+});
 
 function navigateToNextSection() {
     const sections = ['home', 'error-codes', 'troubleshooting', 'maintenance', 'repairs', 'parts', 'forum', 'account'];
