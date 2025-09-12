@@ -1,9 +1,31 @@
-<!DOCTYPE html>
+THIS SHOULD BE A LINTER ERROR<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Помощник</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="Полная информация о Mitsubishi ASX 2011: коды ошибок, диагностика, ремонт и обслуживание">
+    <meta name="theme-color" content="#2a5298">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="ASX Помощник">
+    <meta name="msapplication-TileColor" content="#2a5298">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="icons/icon-192x192.svg">
+    <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152x152.svg">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-192x192.svg">
+    <link rel="apple-touch-icon" sizes="167x167" href="icons/icon-192x192.svg">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="icons/icon-192x192.svg">
+    <link rel="shortcut icon" href="icons/icon-192x192.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -28,15 +50,10 @@
                 <a href="#repairs" class="nav-link">Ремонт</a>
                 <a href="#parts" class="nav-link">Запчасти</a>
             </nav>
-            <!-- Backdrop for mobile navigation -->
-            <div class="nav-backdrop" id="nav-backdrop"></div>
             
             <!-- Theme Toggle -->
             <button class="theme-toggle" id="theme-toggle" title="Тема">
                 <i class="fas fa-moon"></i>
-            </button>
-            <button class="nav-toggle" id="nav-toggle">
-                <i class="fas fa-bars"></i>
             </button>
         </div>
     </header>
@@ -283,5 +300,20 @@
     </button>
 
     <script type="module" src="js/app.js"></script>
+    
+    <!-- PWA Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch((registrationError) => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+    </script>
 </body>
 </html>

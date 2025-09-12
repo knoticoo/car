@@ -66,28 +66,12 @@ class MitsubishiASXApp {
                 const targetSection = link.getAttribute('href').substring(1);
                 this.showSection(targetSection);
                 
-                // Close mobile nav if open
-                if (this.isMobile) {
-                    this.toggleMobileNav(false);
-                }
+                // Navigation handled by header links
             });
         });
 
-        // Mobile navigation toggle
-        const navToggle = document.getElementById('nav-toggle');
-        const navBackdrop = document.getElementById('nav-backdrop');
+        // Theme toggle
         const themeToggle = document.getElementById('theme-toggle');
-        if (navToggle) {
-            navToggle.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                this.toggleMobileNav();
-            });
-        }
-
-        if (navBackdrop) {
-            navBackdrop.addEventListener('click', () => this.toggleMobileNav(false));
-        }
 
         if (themeToggle) {
             themeToggle.addEventListener('click', () => this.toggleTheme());
@@ -122,17 +106,7 @@ class MitsubishiASXApp {
             this.handleResize();
         });
 
-        // Close mobile nav when clicking outside
-        document.addEventListener('click', (e) => {
-            const nav = document.querySelector('.nav');
-            const navToggle = document.getElementById('nav-toggle');
-            
-            if (this.isMobile && nav && nav.classList.contains('mobile-open')) {
-                if (!nav.contains(e.target) && !navToggle.contains(e.target)) {
-                    this.toggleMobileNav(false);
-                }
-            }
-        });
+        // Mobile navigation removed for PWA
     }
 
     toggleTheme() {
@@ -152,7 +126,6 @@ class MitsubishiASXApp {
             this.setupSwipeGestures();
         } else {
             document.body.classList.remove('mobile');
-            this.toggleMobileNav(false);
         }
     }
 
@@ -288,30 +261,7 @@ class MitsubishiASXApp {
         console.log('Loading initial data...');
     }
 
-    toggleMobileNav(force = null) {
-        const nav = document.querySelector('.nav');
-        const navToggle = document.getElementById('nav-toggle');
-        const navBackdrop = document.getElementById('nav-backdrop');
-        
-        if (!nav || !navToggle) return;
-        
-        const isOpen = nav.classList.contains('mobile-open');
-        const shouldOpen = force !== null ? force : !isOpen;
-        
-        if (shouldOpen) {
-            nav.classList.add('mobile-open');
-            navToggle.classList.add('active');
-            navToggle.innerHTML = '<i class="fas fa-times"></i>';
-            document.body.style.overflow = 'hidden';
-            if (navBackdrop) navBackdrop.classList.add('active');
-        } else {
-            nav.classList.remove('mobile-open');
-            navToggle.classList.remove('active');
-            navToggle.innerHTML = '<i class="fas fa-bars"></i>';
-            document.body.style.overflow = '';
-            if (navBackdrop) navBackdrop.classList.remove('active');
-        }
-    }
+    // Mobile navigation removed for PWA
 
     navigateToNextSection() {
         const sections = ['home', 'error-codes', 'troubleshooting', 'maintenance', 'repairs', 'parts'];
