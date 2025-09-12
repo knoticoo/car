@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mitsubishi ASX 2011 - Помощник владельца</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-car"></i>
+                <h1>Mitsubishi ASX 2011</h1>
+                <span>Помощник владельца</span>
+            </div>
+            <nav class="nav">
+                <a href="#home" class="nav-link active">Главная</a>
+                <a href="#error-codes" class="nav-link">Коды ошибок</a>
+                <a href="#troubleshooting" class="nav-link">Диагностика</a>
+                <a href="#maintenance" class="nav-link">Обслуживание</a>
+                <a href="#repairs" class="nav-link">Ремонт</a>
+                <a href="#parts" class="nav-link">Запчасти</a>
+                <a href="#forum" class="nav-link">Форум</a>
+                <a href="#account" class="nav-link">Аккаунт</a>
+            </nav>
+            <div class="search-container">
+                <input type="text" id="global-search" placeholder="Поиск по всем разделам...">
+                <i class="fas fa-search"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <div class="container">
+                <div class="hero">
+                    <h2>Добро пожаловать в помощник Mitsubishi ASX 2011</h2>
+                    <p>Полная информация о вашем автомобиле: коды ошибок, диагностика, ремонт и обслуживание</p>
+                </div>
+                
+                <div class="quick-actions">
+                    <div class="action-card" onclick="showSection('error-codes')">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>Коды ошибок</h3>
+                        <p>Расшифровка диагностических кодов</p>
+                    </div>
+                    <div class="action-card" onclick="showSection('troubleshooting')">
+                        <i class="fas fa-tools"></i>
+                        <h3>Диагностика</h3>
+                        <p>Пошаговая диагностика проблем</p>
+                    </div>
+                    <div class="action-card" onclick="showSection('maintenance')">
+                        <i class="fas fa-calendar-check"></i>
+                        <h3>Обслуживание</h3>
+                        <p>График и советы по ТО</p>
+                    </div>
+                    <div class="action-card" onclick="showSection('repairs')">
+                        <i class="fas fa-wrench"></i>
+                        <h3>Ремонт</h3>
+                        <p>Инструкции по ремонту</p>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>500+</h3>
+                        <p>Кодов ошибок</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>200+</h3>
+                        <p>Процедур ремонта</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>50+</h3>
+                        <p>Советов по обслуживанию</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>1000+</h3>
+                        <p>Запчастей в каталоге</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Error Codes Section -->
+        <section id="error-codes" class="section">
+            <div class="container">
+                <h2>Коды ошибок Mitsubishi ASX 2011</h2>
+                <div class="search-filters">
+                    <input type="text" id="error-search" placeholder="Поиск по коду или описанию...">
+                    <select id="error-category">
+                        <option value="">Все категории</option>
+                        <option value="engine">Двигатель</option>
+                        <option value="transmission">Трансмиссия</option>
+                        <option value="electrical">Электрика</option>
+                        <option value="brakes">Тормоза</option>
+                        <option value="suspension">Подвеска</option>
+                    </select>
+                </div>
+                <div class="error-codes-list" id="error-codes-list">
+                    <!-- Error codes will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Troubleshooting Section -->
+        <section id="troubleshooting" class="section">
+            <div class="container">
+                <h2>Диагностика проблем</h2>
+                <div class="troubleshooting-categories">
+                    <div class="category-card" onclick="showTroubleshootingCategory('engine')">
+                        <i class="fas fa-cog"></i>
+                        <h3>Двигатель</h3>
+                        <p>Проблемы с мотором, топливной системой</p>
+                    </div>
+                    <div class="category-card" onclick="showTroubleshootingCategory('transmission')">
+                        <i class="fas fa-cogs"></i>
+                        <h3>Трансмиссия</h3>
+                        <p>Коробка передач, сцепление</p>
+                    </div>
+                    <div class="category-card" onclick="showTroubleshootingCategory('electrical')">
+                        <i class="fas fa-bolt"></i>
+                        <h3>Электрика</h3>
+                        <p>Аккумулятор, генератор, освещение</p>
+                    </div>
+                    <div class="category-card" onclick="showTroubleshootingCategory('brakes')">
+                        <i class="fas fa-circle"></i>
+                        <h3>Тормоза</h3>
+                        <p>Тормозная система, ABS</p>
+                    </div>
+                </div>
+                <div id="troubleshooting-content" class="troubleshooting-content">
+                    <!-- Troubleshooting steps will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Maintenance Section -->
+        <section id="maintenance" class="section">
+            <div class="container">
+                <h2>Обслуживание и ТО</h2>
+                <div class="maintenance-schedule">
+                    <h3>График обслуживания</h3>
+                    <div class="schedule-timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-marker">10k</div>
+                            <div class="timeline-content">
+                                <h4>10,000 км</h4>
+                                <ul>
+                                    <li>Замена масла двигателя</li>
+                                    <li>Замена масляного фильтра</li>
+                                    <li>Проверка уровня жидкостей</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker">20k</div>
+                            <div class="timeline-content">
+                                <h4>20,000 км</h4>
+                                <ul>
+                                    <li>Замена воздушного фильтра</li>
+                                    <li>Проверка тормозных колодок</li>
+                                    <li>Диагностика подвески</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker">40k</div>
+                            <div class="timeline-content">
+                                <h4>40,000 км</h4>
+                                <ul>
+                                    <li>Замена свечей зажигания</li>
+                                    <li>Замена топливного фильтра</li>
+                                    <li>Проверка ремня ГРМ</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="maintenance-tips">
+                    <h3>Советы по обслуживанию</h3>
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <i class="fas fa-oil-can"></i>
+                            <h4>Масло двигателя</h4>
+                            <p>Используйте синтетическое масло 5W-30 или 10W-40. Меняйте каждые 10,000 км.</p>
+                        </div>
+                        <div class="tip-card">
+                            <i class="fas fa-thermometer-half"></i>
+                            <h4>Охлаждающая жидкость</h4>
+                            <p>Проверяйте уровень каждые 2 недели. Используйте антифриз Mitsubishi Genuine.</p>
+                        </div>
+                        <div class="tip-card">
+                            <i class="fas fa-battery-half"></i>
+                            <h4>Аккумулятор</h4>
+                            <p>Проверяйте клеммы на окисление. Заряжайте при длительной стоянке.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Repairs Section -->
+        <section id="repairs" class="section">
+            <div class="container">
+                <h2>Инструкции по ремонту</h2>
+                <div class="repair-categories">
+                    <div class="repair-category" onclick="showRepairCategory('engine')">
+                        <i class="fas fa-cog"></i>
+                        <h3>Двигатель</h3>
+                        <span class="difficulty easy">Легко</span>
+                    </div>
+                    <div class="repair-category" onclick="showRepairCategory('transmission')">
+                        <i class="fas fa-cogs"></i>
+                        <h3>Трансмиссия</h3>
+                        <span class="difficulty medium">Средне</span>
+                    </div>
+                    <div class="repair-category" onclick="showRepairCategory('electrical')">
+                        <i class="fas fa-bolt"></i>
+                        <h3>Электрика</h3>
+                        <span class="difficulty easy">Легко</span>
+                    </div>
+                    <div class="repair-category" onclick="showRepairCategory('brakes')">
+                        <i class="fas fa-circle"></i>
+                        <h3>Тормоза</h3>
+                        <span class="difficulty medium">Средне</span>
+                    </div>
+                </div>
+                <div id="repair-content" class="repair-content">
+                    <!-- Repair instructions will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Parts Section -->
+        <section id="parts" class="section">
+            <div class="container">
+                <h2>Каталог запчастей</h2>
+                <div class="parts-search">
+                    <input type="text" id="parts-search" placeholder="Поиск запчастей...">
+                    <select id="parts-category">
+                        <option value="">Все категории</option>
+                        <option value="engine">Двигатель</option>
+                        <option value="transmission">Трансмиссия</option>
+                        <option value="electrical">Электрика</option>
+                        <option value="brakes">Тормоза</option>
+                        <option value="suspension">Подвеска</option>
+                    </select>
+                </div>
+                <div class="parts-grid" id="parts-grid">
+                    <!-- Parts will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Forum Section -->
+        <section id="forum" class="section">
+            <div class="container">
+                <h2>Форум владельцев</h2>
+                <div class="forum-categories">
+                    <div class="forum-category">
+                        <h3>Общие вопросы</h3>
+                        <div class="forum-topics">
+                            <div class="topic">
+                                <h4>Проблема с запуском двигателя</h4>
+                                <p>Автор: Иван Петров • 2 дня назад</p>
+                                <span class="replies">15 ответов</span>
+                            </div>
+                            <div class="topic">
+                                <h4>Замена масла - какой лучше?</h4>
+                                <p>Автор: Мария Сидорова • 1 неделя назад</p>
+                                <span class="replies">8 ответов</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="forum-category">
+                        <h3>Технические вопросы</h3>
+                        <div class="forum-topics">
+                            <div class="topic">
+                                <h4>Код ошибки P0301 - пропуски зажигания</h4>
+                                <p>Автор: Алексей Козлов • 3 дня назад</p>
+                                <span class="replies">12 ответов</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Account Section -->
+        <section id="account" class="section">
+            <div class="container">
+                <h2>Личный кабинет</h2>
+                <div class="account-content">
+                    <div class="account-info">
+                        <h3>Информация о вашем ASX</h3>
+                        <form class="car-info-form">
+                            <div class="form-group">
+                                <label>Год выпуска:</label>
+                                <input type="number" value="2011" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label>Пробег:</label>
+                                <input type="number" placeholder="Введите текущий пробег">
+                            </div>
+                            <div class="form-group">
+                                <label>Дата последнего ТО:</label>
+                                <input type="date">
+                            </div>
+                            <button type="submit">Сохранить</button>
+                        </form>
+                    </div>
+                    <div class="maintenance-history">
+                        <h3>История обслуживания</h3>
+                        <div class="history-timeline">
+                            <div class="history-item">
+                                <div class="history-date">15.01.2024</div>
+                                <div class="history-content">
+                                    <h4>Замена масла</h4>
+                                    <p>Пробег: 95,000 км</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Mitsubishi ASX 2011 Helper. Все права защищены.</p>
+            <p>Информация предоставляется только в ознакомительных целях.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "name": "mitsubishi-asx-2011-app",
+  "version": "1.0.0",
+  "description": "Comprehensive web application for Mitsubishi ASX 2011 owners",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "python -m http.server 8000"
+  },
+  "dependencies": {
+    "chart.js": "^4.4.0"
+  },
+  "keywords": ["mitsubishi", "asx", "2011", "car", "repair", "troubleshooting", "russian"],
+  "author": "Mitsubishi ASX Helper",
+  "license": "MIT"
+}
