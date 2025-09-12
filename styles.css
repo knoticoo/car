@@ -568,6 +568,13 @@ body {
 .part-card .part-number {
     color: #666;
     font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.part-card .supplier {
+    color: #2a5298;
+    font-size: 0.9rem;
+    font-weight: bold;
     margin-bottom: 1rem;
 }
 

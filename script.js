@@ -211,13 +211,15 @@ const troubleshootingData = {
     }
 };
 
-// Parts Catalog
+// Parts Catalog (Latvian suppliers)
 const partsCatalog = {
     engine: [
         {
             name: "Масляный фильтр двигателя",
             partNumber: "MD360785",
-            price: 1200,
+            price: 15.50,
+            currency: "EUR",
+            supplier: "Auto Parts Latvia",
             description: "Оригинальный масляный фильтр для двигателя 4B11",
             category: "engine",
             difficulty: "Легко",
@@ -226,7 +228,9 @@ const partsCatalog = {
         {
             name: "Воздушный фильтр",
             partNumber: "MD360786",
-            price: 800,
+            price: 12.80,
+            currency: "EUR",
+            supplier: "Riga Auto Parts",
             description: "Воздушный фильтр салона Mitsubishi ASX",
             category: "engine",
             difficulty: "Легко",
@@ -235,31 +239,118 @@ const partsCatalog = {
         {
             name: "Свечи зажигания NGK",
             partNumber: "NGK-ILZKR7B-11",
-            price: 2500,
+            price: 28.90,
+            currency: "EUR",
+            supplier: "Daugavpils Auto",
             description: "Комплект свечей зажигания (4 шт.)",
             category: "engine",
             difficulty: "Легко",
             time: "30 минут"
+        },
+        {
+            name: "Ремень ГРМ",
+            partNumber: "GMB-6PK1230",
+            price: 45.60,
+            currency: "EUR",
+            supplier: "Liepaja Parts",
+            description: "Ремень газораспределительного механизма",
+            category: "engine",
+            difficulty: "Сложно",
+            time: "3 часа"
+        },
+        {
+            name: "Помпа водяная",
+            partNumber: "GMB-130-0110",
+            price: 78.40,
+            currency: "EUR",
+            supplier: "Ventspils Auto",
+            description: "Водяной насос системы охлаждения",
+            category: "engine",
+            difficulty: "Средне",
+            time: "2 часа"
         }
     ],
     brakes: [
         {
             name: "Тормозные колодки передние",
-            partNumber: "MB123456",
-            price: 3500,
-            description: "Комплект тормозных колодок передних колес",
+            partNumber: "BREMBO-P85001",
+            price: 65.20,
+            currency: "EUR",
+            supplier: "Riga Brake Parts",
+            description: "Комплект тормозных колодок передних колес BREMBO",
             category: "brakes",
             difficulty: "Средне",
             time: "1 час"
         },
         {
             name: "Тормозные диски передние",
-            partNumber: "MB123457",
-            price: 4500,
-            description: "Тормозные диски передних колес (2 шт.)",
+            partNumber: "BREMBO-09.A407.11",
+            price: 89.90,
+            currency: "EUR",
+            supplier: "Riga Brake Parts",
+            description: "Тормозные диски передних колес BREMBO (2 шт.)",
             category: "brakes",
             difficulty: "Средне",
             time: "1.5 часа"
+        },
+        {
+            name: "Тормозная жидкость",
+            partNumber: "DOT4-1L",
+            price: 8.50,
+            currency: "EUR",
+            supplier: "Auto Parts Latvia",
+            description: "Тормозная жидкость DOT4, 1 литр",
+            category: "brakes",
+            difficulty: "Легко",
+            time: "30 минут"
+        }
+    ],
+    suspension: [
+        {
+            name: "Амортизатор передний",
+            partNumber: "MONROE-G7554",
+            price: 125.80,
+            currency: "EUR",
+            supplier: "Riga Suspension",
+            description: "Передний амортизатор MONROE",
+            category: "suspension",
+            difficulty: "Средне",
+            time: "2 часа"
+        },
+        {
+            name: "Пружина передняя",
+            partNumber: "LESJOFORS-4015001",
+            price: 95.60,
+            currency: "EUR",
+            supplier: "Daugavpils Auto",
+            description: "Передняя пружина подвески LESJOFORS",
+            category: "suspension",
+            difficulty: "Сложно",
+            time: "3 часа"
+        }
+    ],
+    electrical: [
+        {
+            name: "Аккумулятор",
+            partNumber: "VARTA-E44",
+            price: 145.90,
+            currency: "EUR",
+            supplier: "Riga Battery Center",
+            description: "Аккумулятор 74Ah, 680A",
+            category: "electrical",
+            difficulty: "Легко",
+            time: "20 минут"
+        },
+        {
+            name: "Генератор",
+            partNumber: "VALEO-440120",
+            price: 285.50,
+            currency: "EUR",
+            supplier: "Liepaja Electrical",
+            description: "Генератор 120A VALEO",
+            category: "electrical",
+            difficulty: "Средне",
+            time: "2.5 часа"
         }
     ]
 };
@@ -413,7 +504,7 @@ function updateNavVisibilityForSection(sectionId) {
     if (!header) return;
 
     // Sections where navigation should be hidden
-    const hideNavSections = ['account']; // Add more sections as needed
+    const hideNavSections = []; // No sections need to hide navigation now
     
     // Sections where navigation should be compact
     const compactNavSections = ['error-codes', 'troubleshooting', 'parts'];
@@ -614,7 +705,8 @@ function loadParts() {
         <div class="part-card">
             <h4>${part.name}</h4>
             <p class="part-number">Артикул: ${part.partNumber}</p>
-            <p class="price">${part.price.toLocaleString()} руб.</p>
+            <p class="supplier">Поставщик: ${part.supplier}</p>
+            <p class="price">${part.price.toFixed(2)} ${part.currency}</p>
             <p class="description">${part.description}</p>
             <div class="part-info">
                 <span class="difficulty">Сложность: ${part.difficulty}</span>
@@ -1080,14 +1172,14 @@ window.addEventListener('resize', () => {
 });
 
 function navigateToNextSection() {
-    const sections = ['home', 'error-codes', 'troubleshooting', 'maintenance', 'repairs', 'parts', 'forum', 'account'];
+    const sections = ['home', 'error-codes', 'troubleshooting', 'maintenance', 'repairs', 'parts'];
     const currentIndex = sections.indexOf(currentSection);
     const nextIndex = (currentIndex + 1) % sections.length;
     showSection(sections[nextIndex]);
 }
 
 function navigateToPreviousSection() {
-    const sections = ['home', 'error-codes', 'troubleshooting', 'maintenance', 'repairs', 'parts', 'forum', 'account'];
+    const sections = ['home', 'error-codes', 'troubleshooting', 'maintenance', 'repairs', 'parts'];
     const currentIndex = sections.indexOf(currentSection);
     const prevIndex = currentIndex === 0 ? sections.length - 1 : currentIndex - 1;
     showSection(sections[prevIndex]);
