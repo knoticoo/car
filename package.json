@@ -9,10 +9,16 @@
     "stop": "./start.sh stop",
     "restart": "./start.sh restart",
     "status": "./start.sh status",
-    "help": "./start.sh help"
+    "help": "./start.sh help",
+    "build": "tsc",
+    "watch": "tsc --watch"
   },
   "dependencies": {
     "chart.js": "^4.4.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0"
   },
   "keywords": ["mitsubishi", "asx", "2011", "car", "repair", "troubleshooting", "russian"],
   "author": "Mitsubishi ASX Helper",
