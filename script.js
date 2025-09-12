@@ -1217,4 +1217,4 @@ function updateMaintenanceHistory(history) {
     `).join('');
 }
 
-console.log('Mitsubishi ASX 2011 Helper Application loaded successfully!');
+console.log('Помощник загружен успешно!');
