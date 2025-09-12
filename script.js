@@ -363,15 +363,18 @@ let isMobile = false;
 
 // Initialize Application
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, initializing app...');
     initializeApp();
     setupEventListeners();
     loadErrorCodes();
     loadParts();
+    console.log('App initialization complete');
 });
 
 function initializeApp() {
     // Check if mobile
     isMobile = window.innerWidth <= 768;
+    console.log('Mobile detection:', { isMobile, width: window.innerWidth });
     
     // Set up navigation
     const navLinks = document.querySelectorAll('.nav-link');
@@ -390,7 +393,9 @@ function initializeApp() {
     // Set up navigation toggle
     const navToggle = document.getElementById('nav-toggle');
     if (navToggle) {
-        navToggle.addEventListener('click', () => {
+        navToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
             toggleMobileNav();
         });
     }
@@ -443,6 +448,18 @@ function initializeApp() {
             });
         });
     }
+
+    // Close mobile nav when clicking outside
+    document.addEventListener('click', (e) => {
+        const nav = document.querySelector('.nav');
+        const navToggle = document.getElementById('nav-toggle');
+        
+        if (isMobile && nav && nav.classList.contains('mobile-open')) {
+            if (!nav.contains(e.target) && !navToggle.contains(e.target)) {
+                toggleMobileNav(false);
+            }
+        }
+    });
 }
 
 function setupEventListeners() {
@@ -546,19 +563,28 @@ function toggleMobileNav(force = null) {
     const nav = document.querySelector('.nav');
     const navToggle = document.getElementById('nav-toggle');
     
-    if (!nav || !navToggle) return;
+    if (!nav || !navToggle) {
+        console.log('Navigation elements not found');
+        return;
+    }
     
     const isOpen = nav.classList.contains('mobile-open');
     const shouldOpen = force !== null ? force : !isOpen;
+    
+    console.log('Toggling mobile nav:', { isOpen, shouldOpen, isMobile });
     
     if (shouldOpen) {
         nav.classList.add('mobile-open');
         navToggle.classList.add('active');
         navToggle.innerHTML = '<i class="fas fa-times"></i>';
+        // Prevent body scroll when nav is open
+        document.body.style.overflow = 'hidden';
     } else {
         nav.classList.remove('mobile-open');
         navToggle.classList.remove('active');
         navToggle.innerHTML = '<i class="fas fa-bars"></i>';
+        // Restore body scroll
+        document.body.style.overflow = '';
     }
 }
 
@@ -1128,7 +1154,7 @@ function isMobile() {
 
 function setupMobileFeatures() {
     // Update mobile state
-    isMobile = isMobile();
+    isMobile = window.innerWidth <= 768;
     
     if (isMobile) {
         // Add mobile-specific features
