@@ -946,23 +946,27 @@ button:hover {
 @media (max-width: 768px) {
     .nav-toggle {
         display: block;
+        z-index: 1001;
     }
     
     .nav {
-        position: absolute;
-        top: 100%;
+        position: fixed;
+        top: 0;
         left: 0;
         right: 0;
         background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
         flex-direction: column;
         gap: 0.5rem;
         padding: 1rem;
+        padding-top: 80px; /* Account for header height */
         box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         transform: translateY(-100%);
         opacity: 0;
         visibility: hidden;
         transition: all 0.3s ease;
         z-index: 999;
+        max-height: 100vh;
+        overflow-y: auto;
     }
     
     .nav.mobile-open {
