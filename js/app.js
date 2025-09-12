@@ -75,12 +75,22 @@ class MitsubishiASXApp {
 
         // Mobile navigation toggle
         const navToggle = document.getElementById('nav-toggle');
+        const navBackdrop = document.getElementById('nav-backdrop');
+        const themeToggle = document.getElementById('theme-toggle');
         if (navToggle) {
             navToggle.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 this.toggleMobileNav();
             });
+        }
+
+        if (navBackdrop) {
+            navBackdrop.addEventListener('click', () => this.toggleMobileNav(false));
+        }
+
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => this.toggleTheme());
         }
 
         // Quick action cards
@@ -123,6 +133,15 @@ class MitsubishiASXApp {
                 }
             }
         });
+    }
+
+    toggleTheme() {
+        const isDark = document.body.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        const icon = document.querySelector('#theme-toggle i');
+        if (icon) {
+            icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+        }
     }
 
     setupMobileFeatures() {
@@ -272,6 +291,7 @@ class MitsubishiASXApp {
     toggleMobileNav(force = null) {
         const nav = document.querySelector('.nav');
         const navToggle = document.getElementById('nav-toggle');
+        const navBackdrop = document.getElementById('nav-backdrop');
         
         if (!nav || !navToggle) return;
         
@@ -283,11 +303,13 @@ class MitsubishiASXApp {
             navToggle.classList.add('active');
             navToggle.innerHTML = '<i class="fas fa-times"></i>';
             document.body.style.overflow = 'hidden';
+            if (navBackdrop) navBackdrop.classList.add('active');
         } else {
             nav.classList.remove('mobile-open');
             navToggle.classList.remove('active');
             navToggle.innerHTML = '<i class="fas fa-bars"></i>';
             document.body.style.overflow = '';
+            if (navBackdrop) navBackdrop.classList.remove('active');
         }
     }
 
