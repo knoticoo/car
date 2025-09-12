@@ -4,8 +4,12 @@
   "description": "Comprehensive web application for Mitsubishi ASX 2011 owners",
   "main": "index.html",
   "scripts": {
-    "start": "python -m http.server 8000",
-    "dev": "python -m http.server 8000"
+    "start": "./start.sh start",
+    "dev": "./start.sh start",
+    "stop": "./start.sh stop",
+    "restart": "./start.sh restart",
+    "status": "./start.sh status",
+    "help": "./start.sh help"
   },
   "dependencies": {
     "chart.js": "^4.4.0"
