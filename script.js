@@ -565,12 +565,30 @@ function initializeApp() {
 
     // Set up navigation toggle
     const navToggle = document.getElementById('nav-toggle');
+    const navBackdrop = document.getElementById('nav-backdrop');
+    const themeToggle = document.getElementById('theme-toggle');
     if (navToggle) {
         navToggle.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
             toggleMobileNav();
         });
+    }
+
+    if (navBackdrop) {
+        navBackdrop.addEventListener('click', () => toggleMobileNav(false));
+    }
+
+    // Apply saved theme and set icon
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark');
+        const icon = document.querySelector('#theme-toggle i');
+        if (icon) icon.className = 'fas fa-sun';
+    }
+
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => toggleTheme());
     }
 
 
@@ -698,6 +716,7 @@ function shouldHideNavOnScroll() {
 function toggleMobileNav(force = null) {
     const nav = document.querySelector('.nav');
     const navToggle = document.getElementById('nav-toggle');
+    const navBackdrop = document.getElementById('nav-backdrop');
     
     if (!nav || !navToggle) {
         console.log('Navigation elements not found', { nav: !!nav, navToggle: !!navToggle });
@@ -715,12 +734,23 @@ function toggleMobileNav(force = null) {
         navToggle.innerHTML = '<i class="fas fa-times"></i>';
         // Prevent body scroll when nav is open
         document.body.style.overflow = 'hidden';
+        if (navBackdrop) navBackdrop.classList.add('active');
     } else {
         nav.classList.remove('mobile-open');
         navToggle.classList.remove('active');
         navToggle.innerHTML = '<i class="fas fa-bars"></i>';
         // Restore body scroll
         document.body.style.overflow = '';
+        if (navBackdrop) navBackdrop.classList.remove('active');
+    }
+}
+
+function toggleTheme() {
+    const isDark = document.body.classList.toggle('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    const icon = document.querySelector('#theme-toggle i');
+    if (icon) {
+        icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
     }
 }
 
