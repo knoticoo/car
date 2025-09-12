@@ -131,6 +131,9 @@ body.dark .back-to-top:hover {
     color: white;
     padding: 1rem 0;
     box-shadow: var(--shadow-sm);
+    backdrop-filter: saturate(180%) blur(12px);
+    -webkit-backdrop-filter: saturate(180%) blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -167,6 +170,7 @@ body.dark .back-to-top:hover {
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
+    gap: var(--space-4);
 }
 
 .logo {
@@ -202,12 +206,33 @@ body.dark .back-to-top:hover {
     padding: 0.5rem 1rem;
     border-radius: 5px;
     transition: all 0.3s ease;
+    position: relative;
 }
 
 .nav-link:hover,
 .nav-link.active {
     background-color: rgba(255,255,255,0.2);
     transform: translateY(-2px);
+}
+
+/* Nav link underline indicator */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: 4px;
+    height: 2px;
+    background: rgba(255,255,255,0.65);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+    border-radius: 1px;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    transform: scaleX(1);
 }
 
 
@@ -271,6 +296,8 @@ body.dark .back-to-top:hover {
     color: white;
     border-radius: var(--radius-lg);
     margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
 }
 
 .hero h2 {
@@ -281,6 +308,30 @@ body.dark .back-to-top:hover {
 .hero p {
     font-size: 1.2rem;
     opacity: 0.9;
+}
+
+/* Decorative hero shapes */
+.hero::before,
+.hero::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+    opacity: 0.25;
+}
+.hero::before {
+    width: 200px;
+    height: 200px;
+    background: #60a5fa;
+    top: -60px;
+    left: -40px;
+}
+.hero::after {
+    width: 240px;
+    height: 240px;
+    background: #a78bfa;
+    bottom: -80px;
+    right: -60px;
 }
 
 /* Quick Actions */
@@ -326,7 +377,7 @@ body.dark .back-to-top:hover {
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
+    gap: 1.25rem;
     margin-bottom: 2rem;
 }
 
@@ -339,8 +390,8 @@ body.dark .back-to-top:hover {
 }
 
 .stat-card h3 {
-    font-size: 2rem;
-    color: #2a5298;
+    font-size: 2.1rem;
+    color: var(--color-primary);
     margin-bottom: 0.5rem;
 }
 
@@ -690,13 +741,14 @@ body.dark .back-to-top:hover {
     text-align: center;
     box-shadow: var(--shadow-md);
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid var(--color-border);
     position: relative;
 }
 
 .repair-category:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    box-shadow: var(--shadow-lg);
 }
 
 .repair-category i {
@@ -787,12 +839,13 @@ body.dark .back-to-top:hover {
     padding: 1.5rem;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-md);
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid var(--color-border);
 }
 
 .part-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    box-shadow: var(--shadow-lg);
 }
 
 .part-card h4 {
@@ -836,6 +889,7 @@ body.dark .back-to-top:hover {
     padding: 2rem;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-md);
+    border: 1px solid var(--color-border);
 }
 
 .forum-category h3 {
@@ -1741,21 +1795,23 @@ button:hover {
 }
 
 .add-to-cart-btn {
-    background: #2a5298;
+    background: var(--color-primary);
     color: white;
-    border: none;
+    border: 1px solid transparent;
     padding: 0.5rem 1rem;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 }
 
 .add-to-cart-btn:hover:not(:disabled) {
-    background: #1e3c72;
+    background: var(--color-primary-strong);
     transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.25);
 }
 
 .add-to-cart-btn:disabled {
