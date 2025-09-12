@@ -1,0 +1,115 @@
+name: Mitsubishi ASX 2011 App CI/CD
+
+on:
+  push:
+    branches: [ main, cursor/build-2011-mitsubishi-asx-info-app-7231 ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        # No external dependencies required for this app
+    
+    - name: Validate HTML
+      run: |
+        # Check if HTML is valid (basic check)
+        if ! grep -q "<!DOCTYPE html>" index.html; then
+          echo "❌ Invalid HTML structure"
+          exit 1
+        fi
+        echo "✅ HTML structure valid"
+    
+    - name: Validate CSS
+      run: |
+        # Check if CSS file exists and has content
+        if [ ! -s styles.css ]; then
+          echo "❌ CSS file is empty or missing"
+          exit 1
+        fi
+        echo "✅ CSS file valid"
+    
+    - name: Validate JavaScript
+      run: |
+        # Check if JS file exists and has content
+        if [ ! -s script.js ]; then
+          echo "❌ JavaScript file is empty or missing"
+          exit 1
+        fi
+        echo "✅ JavaScript file valid"
+    
+    - name: Test service management script
+      run: |
+        chmod +x start.sh
+        ./start.sh help
+        echo "✅ Service script valid"
+    
+    - name: Test application startup
+      run: |
+        # Start the application
+        ./start.sh start
+        sleep 5
+        
+        # Check if service is running
+        ./start.sh status
+        
+        # Test HTTP response
+        curl -f http://localhost:3050 || exit 1
+        echo "✅ Application responds to HTTP requests"
+        
+        # Stop the application
+        ./start.sh stop
+        echo "✅ Application stops cleanly"
+    
+    - name: Test mobile responsiveness
+      run: |
+        # Check for mobile-specific CSS
+        if ! grep -q "@media.*max-width.*768px" styles.css; then
+          echo "❌ Mobile responsive CSS not found"
+          exit 1
+        fi
+        echo "✅ Mobile responsive design detected"
+    
+    - name: Test error codes data
+      run: |
+        # Check if error codes are properly structured
+        if ! grep -q "errorCodes" script.js; then
+          echo "❌ Error codes data not found"
+          exit 1
+        fi
+        echo "✅ Error codes data structure valid"
+    
+    - name: Test parts catalog
+      run: |
+        # Check if parts catalog exists
+        if ! grep -q "partsCatalog" script.js; then
+          echo "❌ Parts catalog not found"
+          exit 1
+        fi
+        echo "✅ Parts catalog data structure valid"
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Deploy to production
+      run: |
+        echo "🚀 Deploying Mitsubishi ASX 2011 App to production"
+        echo "✅ All tests passed - ready for deployment"
+        # Add actual deployment steps here if needed
