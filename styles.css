@@ -236,18 +236,7 @@ body.dark .back-to-top:hover {
 }
 
 
-/* Navigation Toggle Button */
-.nav-toggle {
-    display: none;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 5px;
-    transition: all 0.3s ease;
-}
+/* Navigation Toggle Button - Removed */
 
 /* Theme Toggle */
 .theme-toggle {
@@ -266,13 +255,7 @@ body.dark .back-to-top:hover {
     background: rgba(255,255,255,0.2);
 }
 
-.nav-toggle:hover {
-    background-color: rgba(255,255,255,0.2);
-}
-
-.nav-toggle.active {
-    background-color: rgba(255,255,255,0.3);
-}
+/* Removed nav-toggle styles */
 
 /* Main Content */
 .main {
@@ -1231,84 +1214,31 @@ button:hover {
     font-weight: bold;
 }
 
-/* Mobile Navigation Styles */
+/* Responsive Navigation - Always Visible */
 @media (max-width: 768px) {
-    .nav-toggle {
-        display: block;
-        z-index: 1001;
-        order: 2;
+    .header .container {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
     }
     
     .nav {
-        position: fixed;
-        top: 70px; /* Position below header */
-        left: 0;
-        right: 0;
-        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-        flex-direction: column;
-        gap: 0.5rem;
-        padding: 1rem;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        transform: translateY(-100%);
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
-        z-index: 999;
-        max-height: calc(100vh - 70px);
-        overflow-y: auto;
-        pointer-events: none; /* ensure it never blocks clicks when hidden */
-    }
-    
-    .nav.mobile-open {
-        transform: translateY(0);
-        opacity: 1;
-        visibility: visible;
-        pointer-events: auto;
-    }
-
-    /* Backdrop shown behind the mobile nav to allow outside-click close */
-    .nav-backdrop {
-        position: fixed;
-        top: 70px; /* match .nav top so header stays interactive */
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0,0,0,0.35);
-        z-index: 998;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.2s ease;
-        pointer-events: none;
-    }
-    .nav-backdrop.active {
-        opacity: 1;
-        visibility: visible;
-        pointer-events: auto;
-    }
-    
-    .header .container {
-        position: relative;
-        flex-wrap: nowrap;
-        justify-content: space-between;
-    }
-    
-    .logo {
-        flex: 1;
-        order: 1;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
     }
     
     .nav-link {
-        padding: 0.75rem 1rem;
-        text-align: center;
-        border-radius: 8px;
-        margin: 0.25rem 0;
-        background-color: rgba(255,255,255,0.1);
+        padding: 0.5rem 0.8rem;
+        font-size: 0.9rem;
     }
     
-    .nav-link:hover,
-    .nav-link.active {
-        background-color: rgba(255,255,255,0.3);
-        transform: none;
+    .logo h1 {
+        font-size: 1.5rem;
+    }
+    
+    .logo span {
+        font-size: 0.8rem;
     }
 }
 
@@ -2022,63 +1952,21 @@ button:hover {
     justify-content: space-between;
 }
 
-/* Improved mobile navigation */
-@media (max-width: 768px) {
-    .header {
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-    }
-    
-    .nav-toggle {
-        background: rgba(255,255,255,0.1);
-        border: 1px solid rgba(255,255,255,0.2);
-        border-radius: 8px;
-        padding: 0.5rem;
-        transition: all 0.3s ease;
-    }
-    
-    .nav-toggle:hover {
-        background: rgba(255,255,255,0.2);
-    }
-    
-    .nav-toggle.active {
-        background: rgba(255,255,255,0.3);
-        transform: rotate(90deg);
-    }
-    
-    .nav {
-        backdrop-filter: blur(10px);
-        border-top: 1px solid rgba(255,255,255,0.1);
-    }
-    
-    .nav-link {
-        transition: all 0.3s ease;
-        font-weight: 500;
-    }
-    
-    .nav-link:hover {
-        background-color: rgba(255,255,255,0.2);
-        transform: translateX(5px);
-    }
-    
-    .nav-link.active {
-        background-color: rgba(255,255,255,0.3);
-        font-weight: bold;
-    }
-}
+/* Removed complex mobile navigation styles */
 
 /* Responsive Design */
 @media (max-width: 768px) {
     .header .container {
-        flex-direction: row;
-        justify-content: space-between;
+        flex-direction: column;
+        justify-content: center;
         align-items: center;
         gap: 1rem;
     }
     
     .nav {
-        display: flex; /* visibility handled by mobile nav styles */
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
     }
     
     .hero h2 {
