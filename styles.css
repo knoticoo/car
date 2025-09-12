@@ -261,29 +261,159 @@ body {
     border-radius: 10px;
     box-shadow: 0 3px 10px rgba(0,0,0,0.1);
     border-left: 4px solid #e74c3c;
+    transition: all 0.3s ease;
 }
 
-.error-code-item h3 {
-    color: #e74c3c;
-    margin-bottom: 0.5rem;
+.error-code-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
 }
 
-.error-code-item .description {
-    color: #666;
+.error-code-header {
     margin-bottom: 1rem;
 }
 
-.error-code-item .symptoms {
+.error-code-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.error-code-title i {
+    font-size: 1.2rem;
+    color: #2a5298;
+}
+
+.error-code-title h3 {
+    color: #e74c3c;
+    margin: 0;
+    flex: 1;
+}
+
+.severity {
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.severity.low {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.severity.medium {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.severity.high {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.severity.critical {
+    background-color: #721c24;
+    color: white;
+}
+
+.error-code-content .description {
+    color: #666;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.error-code-content .symptoms {
     background-color: #f8f9fa;
     padding: 1rem;
     border-radius: 5px;
     margin-bottom: 1rem;
+    border-left: 3px solid #ffc107;
 }
 
-.error-code-item .solutions {
+.error-code-content .symptoms h4 {
+    color: #856404;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.error-code-content .solutions {
     background-color: #e8f5e8;
     padding: 1rem;
     border-radius: 5px;
+    border-left: 3px solid #28a745;
+}
+
+.error-code-content .solutions h4 {
+    color: #155724;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.error-code-content ul {
+    margin: 0;
+    padding-left: 1.5rem;
+}
+
+.error-code-content li {
+    margin-bottom: 0.25rem;
+    line-height: 1.4;
+}
+
+.code-info {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.code-info span {
+    background-color: #f8f9fa;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.difficulty.easy {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.difficulty.medium {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.difficulty.hard {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.no-results {
+    text-align: center;
+    padding: 3rem;
+    color: #666;
+}
+
+.no-results i {
+    font-size: 3rem;
+    color: #ddd;
+    margin-bottom: 1rem;
+}
+
+.no-results h3 {
+    color: #333;
+    margin-bottom: 0.5rem;
 }
 
 /* Troubleshooting */

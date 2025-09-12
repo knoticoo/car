@@ -1,0 +1,406 @@
+// Parts Catalog for Mitsubishi ASX 2011 - Latvian Market
+// Comprehensive parts database with local suppliers
+
+export const partsCatalog = {
+    engine: [
+        {
+            name: "Масляный фильтр двигателя",
+            partNumber: "MD360785",
+            price: 15.50,
+            currency: "EUR",
+            supplier: "Auto Parts Latvia",
+            description: "Оригинальный масляный фильтр для двигателя 4B11",
+            category: "engine",
+            difficulty: "Легко",
+            time: "15 минут",
+            icon: "fas fa-filter",
+            inStock: true,
+            rating: 4.5
+        },
+        {
+            name: "Воздушный фильтр",
+            partNumber: "MD360786",
+            price: 12.80,
+            currency: "EUR",
+            supplier: "Riga Auto Parts",
+            description: "Воздушный фильтр салона Mitsubishi ASX",
+            category: "engine",
+            difficulty: "Легко",
+            time: "10 минут",
+            icon: "fas fa-wind",
+            inStock: true,
+            rating: 4.3
+        },
+        {
+            name: "Свечи зажигания NGK",
+            partNumber: "NGK-ILZKR7B-11",
+            price: 28.90,
+            currency: "EUR",
+            supplier: "Daugavpils Auto",
+            description: "Комплект свечей зажигания (4 шт.)",
+            category: "engine",
+            difficulty: "Легко",
+            time: "30 минут",
+            icon: "fas fa-bolt",
+            inStock: true,
+            rating: 4.7
+        },
+        {
+            name: "Ремень ГРМ",
+            partNumber: "GMB-6PK1230",
+            price: 45.60,
+            currency: "EUR",
+            supplier: "Liepaja Parts",
+            description: "Ремень газораспределительного механизма",
+            category: "engine",
+            difficulty: "Сложно",
+            time: "3 часа",
+            icon: "fas fa-cog",
+            inStock: true,
+            rating: 4.4
+        },
+        {
+            name: "Помпа водяная",
+            partNumber: "GMB-130-0110",
+            price: 78.40,
+            currency: "EUR",
+            supplier: "Ventspils Auto",
+            description: "Водяной насос системы охлаждения",
+            category: "engine",
+            difficulty: "Средне",
+            time: "2 часа",
+            icon: "fas fa-tint",
+            inStock: true,
+            rating: 4.2
+        },
+        {
+            name: "Топливный фильтр",
+            partNumber: "MAHLE-KL83",
+            price: 18.90,
+            currency: "EUR",
+            supplier: "Riga Auto Parts",
+            description: "Топливный фильтр для двигателя 4B11",
+            category: "engine",
+            difficulty: "Средне",
+            time: "1 час",
+            icon: "fas fa-filter",
+            inStock: true,
+            rating: 4.1
+        },
+        {
+            name: "Датчик кислорода",
+            partNumber: "BOSCH-0258006547",
+            price: 95.50,
+            currency: "EUR",
+            supplier: "Auto Parts Latvia",
+            description: "Датчик кислорода для катализатора",
+            category: "engine",
+            difficulty: "Средне",
+            time: "1 час",
+            icon: "fas fa-thermometer-half",
+            inStock: true,
+            rating: 4.6
+        }
+    ],
+    brakes: [
+        {
+            name: "Тормозные колодки передние",
+            partNumber: "BREMBO-P85001",
+            price: 65.20,
+            currency: "EUR",
+            supplier: "Riga Brake Parts",
+            description: "Комплект тормозных колодок передних колес BREMBO",
+            category: "brakes",
+            difficulty: "Средне",
+            time: "1 час",
+            icon: "fas fa-circle",
+            inStock: true,
+            rating: 4.8
+        },
+        {
+            name: "Тормозные диски передние",
+            partNumber: "BREMBO-09.A407.11",
+            price: 89.90,
+            currency: "EUR",
+            supplier: "Riga Brake Parts",
+            description: "Тормозные диски передних колес BREMBO (2 шт.)",
+            category: "brakes",
+            difficulty: "Средне",
+            time: "1.5 часа",
+            icon: "fas fa-circle",
+            inStock: true,
+            rating: 4.5
+        },
+        {
+            name: "Тормозная жидкость",
+            partNumber: "DOT4-1L",
+            price: 8.50,
+            currency: "EUR",
+            supplier: "Auto Parts Latvia",
+            description: "Тормозная жидкость DOT4, 1 литр",
+            category: "brakes",
+            difficulty: "Легко",
+            time: "30 минут",
+            icon: "fas fa-tint",
+            inStock: true,
+            rating: 4.3
+        },
+        {
+            name: "Тормозные шланги",
+            partNumber: "BREMBO-BH001",
+            price: 25.80,
+            currency: "EUR",
+            supplier: "Riga Brake Parts",
+            description: "Тормозные шланги передние (2 шт.)",
+            category: "brakes",
+            difficulty: "Средне",
+            time: "1 час",
+            icon: "fas fa-circle",
+            inStock: true,
+            rating: 4.2
+        }
+    ],
+    suspension: [
+        {
+            name: "Амортизатор передний",
+            partNumber: "MONROE-G7554",
+            price: 125.80,
+            currency: "EUR",
+            supplier: "Riga Suspension",
+            description: "Передний амортизатор MONROE",
+            category: "suspension",
+            difficulty: "Средне",
+            time: "2 часа",
+            icon: "fas fa-car",
+            inStock: true,
+            rating: 4.4
+        },
+        {
+            name: "Пружина передняя",
+            partNumber: "LESJOFORS-4015001",
+            price: 95.60,
+            currency: "EUR",
+            supplier: "Daugavpils Auto",
+            description: "Передняя пружина подвески LESJOFORS",
+            category: "suspension",
+            difficulty: "Сложно",
+            time: "3 часа",
+            icon: "fas fa-car",
+            inStock: true,
+            rating: 4.3
+        },
+        {
+            name: "Стойка стабилизатора",
+            partNumber: "LEMFORDER-33984",
+            price: 35.90,
+            currency: "EUR",
+            supplier: "Riga Suspension",
+            description: "Стойка стабилизатора поперечной устойчивости",
+            category: "suspension",
+            difficulty: "Средне",
+            time: "1 час",
+            icon: "fas fa-car",
+            inStock: true,
+            rating: 4.1
+        },
+        {
+            name: "Опорный подшипник",
+            partNumber: "FAG-805620",
+            price: 45.20,
+            currency: "EUR",
+            supplier: "Riga Suspension",
+            description: "Опорный подшипник стойки амортизатора",
+            category: "suspension",
+            difficulty: "Сложно",
+            time: "2.5 часа",
+            icon: "fas fa-car",
+            inStock: true,
+            rating: 4.0
+        }
+    ],
+    electrical: [
+        {
+            name: "Аккумулятор",
+            partNumber: "VARTA-E44",
+            price: 145.90,
+            currency: "EUR",
+            supplier: "Riga Battery Center",
+            description: "Аккумулятор 74Ah, 680A",
+            category: "electrical",
+            difficulty: "Легко",
+            time: "20 минут",
+            icon: "fas fa-battery-half",
+            inStock: true,
+            rating: 4.7
+        },
+        {
+            name: "Генератор",
+            partNumber: "VALEO-440120",
+            price: 285.50,
+            currency: "EUR",
+            supplier: "Liepaja Electrical",
+            description: "Генератор 120A VALEO",
+            category: "electrical",
+            difficulty: "Средне",
+            time: "2.5 часа",
+            icon: "fas fa-charging-station",
+            inStock: true,
+            rating: 4.5
+        },
+        {
+            name: "Стартер",
+            partNumber: "VALEO-440120",
+            price: 195.80,
+            currency: "EUR",
+            supplier: "Liepaja Electrical",
+            description: "Стартер VALEO для двигателя 4B11",
+            category: "electrical",
+            difficulty: "Средне",
+            time: "2 часа",
+            icon: "fas fa-play",
+            inStock: true,
+            rating: 4.4
+        },
+        {
+            name: "Датчик скорости",
+            partNumber: "BOSCH-0265001001",
+            price: 35.60,
+            currency: "EUR",
+            supplier: "Auto Parts Latvia",
+            description: "Датчик скорости автомобиля",
+            category: "electrical",
+            difficulty: "Легко",
+            time: "30 минут",
+            icon: "fas fa-tachometer-alt",
+            inStock: true,
+            rating: 4.2
+        }
+    ],
+    transmission: [
+        {
+            name: "Масло для АКПП",
+            partNumber: "MITSUBISHI-ATF-SP3",
+            price: 25.90,
+            currency: "EUR",
+            supplier: "Riga Auto Parts",
+            description: "Масло для автоматической коробки передач SP-III",
+            category: "transmission",
+            difficulty: "Средне",
+            time: "1 час",
+            icon: "fas fa-tint",
+            inStock: true,
+            rating: 4.6
+        },
+        {
+            name: "Фильтр АКПП",
+            partNumber: "MITSUBISHI-ATF-FILTER",
+            price: 45.80,
+            currency: "EUR",
+            supplier: "Riga Auto Parts",
+            description: "Фильтр для автоматической коробки передач",
+            category: "transmission",
+            difficulty: "Сложно",
+            time: "2 часа",
+            icon: "fas fa-filter",
+            inStock: true,
+            rating: 4.3
+        }
+    ],
+    body: [
+        {
+            name: "Фары передние",
+            partNumber: "MITSUBISHI-ASX-HEADLIGHT",
+            price: 185.90,
+            currency: "EUR",
+            supplier: "Riga Body Parts",
+            description: "Передние фары в сборе (левая и правая)",
+            category: "body",
+            difficulty: "Средне",
+            time: "1 час",
+            icon: "fas fa-lightbulb",
+            inStock: true,
+            rating: 4.4
+        },
+        {
+            name: "Зеркала боковые",
+            partNumber: "MITSUBISHI-ASX-MIRROR",
+            price: 95.50,
+            currency: "EUR",
+            supplier: "Riga Body Parts",
+            description: "Боковые зеркала с подогревом",
+            category: "body",
+            difficulty: "Средне",
+            time: "45 минут",
+            icon: "fas fa-mirror",
+            inStock: true,
+            rating: 4.2
+        },
+        {
+            name: "Бампер передний",
+            partNumber: "MITSUBISHI-ASX-BUMPER-FRONT",
+            price: 285.90,
+            currency: "EUR",
+            supplier: "Riga Body Parts",
+            description: "Передний бампер в сборе",
+            category: "body",
+            difficulty: "Сложно",
+            time: "3 часа",
+            icon: "fas fa-car",
+            inStock: true,
+            rating: 4.1
+        }
+    ]
+};
+
+export const suppliers = {
+    "Auto Parts Latvia": {
+        name: "Auto Parts Latvia",
+        address: "Rīga, Brīvības iela 123",
+        phone: "+371 20012345",
+        email: "info@autoparts.lv",
+        website: "www.autoparts.lv",
+        rating: 4.5,
+        delivery: "1-2 дня",
+        payment: ["Наличные", "Карта", "Банковский перевод"]
+    },
+    "Riga Auto Parts": {
+        name: "Riga Auto Parts",
+        address: "Rīga, Krasta iela 45",
+        phone: "+371 20012346",
+        email: "info@rigaautoparts.lv",
+        website: "www.rigaautoparts.lv",
+        rating: 4.3,
+        delivery: "1-3 дня",
+        payment: ["Наличные", "Карта", "Рассрочка"]
+    },
+    "Daugavpils Auto": {
+        name: "Daugavpils Auto",
+        address: "Daugavpils, Vienības iela 78",
+        phone: "+371 20012347",
+        email: "info@daugavpilsauto.lv",
+        website: "www.daugavpilsauto.lv",
+        rating: 4.4,
+        delivery: "2-4 дня",
+        payment: ["Наличные", "Карта"]
+    },
+    "Liepaja Parts": {
+        name: "Liepaja Parts",
+        address: "Liepāja, Lielā iela 12",
+        phone: "+371 20012348",
+        email: "info@liepajaparts.lv",
+        website: "www.liepajaparts.lv",
+        rating: 4.2,
+        delivery: "2-3 дня",
+        payment: ["Наличные", "Карта", "Банковский перевод"]
+    },
+    "Ventspils Auto": {
+        name: "Ventspils Auto",
+        address: "Ventspils, Jūras iela 34",
+        phone: "+371 20012349",
+        email: "info@ventspilsauto.lv",
+        website: "www.ventspilsauto.lv",
+        rating: 4.1,
+        delivery: "3-5 дней",
+        payment: ["Наличные", "Карта"]
+    }
+};
