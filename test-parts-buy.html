@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Parts Buy Buttons</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container" style="padding: 2rem;">
+        <h1>Test Parts Buy Buttons</h1>
+        
+        <!-- Test Parts Grid -->
+        <div class="parts-grid" id="parts-grid">
+            <!-- Parts will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <script type="module">
+        import { PartsComponent } from './js/components/parts.js';
+        
+        // Initialize the component
+        const partsComponent = new PartsComponent();
+        
+        // Make it globally accessible
+        window.partsComponent = partsComponent;
+        
+        // Initialize the component
+        partsComponent.init('parts-grid');
+        
+        console.log('Parts test page loaded. PartsComponent initialized.');
+        console.log('Available methods:', Object.getOwnPropertyNames(Object.getPrototypeOf(partsComponent)));
+    </script>
+</body>
+</html>
