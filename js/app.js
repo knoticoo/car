@@ -67,6 +67,7 @@ class MitsubishiASXApp {
         
         // Make components globally accessible
         window.partsComponent = this.components.parts;
+        window.errorCodesComponent = this.components.errorCodes;
     }
 
     setupEventListeners() {
