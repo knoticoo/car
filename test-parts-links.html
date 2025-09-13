@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Parts Links</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container" style="padding: 2rem;">
+        <h1>Test Parts Links in Error Codes</h1>
+        
+        <!-- Test Error Code with Parts -->
+        <div class="error-code-item" data-code="P0100">
+            <div class="error-code-header">
+                <div class="error-code-title">
+                    <i class="fas fa-wind"></i>
+                    <h3>P0100 - Неисправность датчика массового расхода воздуха</h3>
+                    <span class="severity high">Высокая</span>
+                </div>
+            </div>
+            
+            <div class="error-code-content">
+                <p class="description">Датчик массового расхода воздуха (MAF) работает неправильно или неисправен.</p>
+                
+                <div class="symptoms">
+                    <h4><i class="fas fa-exclamation-circle"></i> Симптомы:</h4>
+                    <ul>
+                        <li>Двигатель глохнет на холостом ходу</li>
+                        <li>Плохая работа двигателя при разгоне</li>
+                        <li>Увеличенный расход топлива</li>
+                    </ul>
+                </div>
+                
+                <div class="solutions">
+                    <h4><i class="fas fa-tools"></i> Решения:</h4>
+                    <ul>
+                        <li>Проверить подключение датчика MAF</li>
+                        <li>Очистить датчик специальным очистителем</li>
+                        <li>Заменить датчик при необходимости</li>
+                    </ul>
+                </div>
+                
+                <div class="required-parts">
+                    <h4><i class="fas fa-shopping-cart"></i> Необходимые запчасти:</h4>
+                    <div class="parts-list">
+                        <div class="part-item required">
+                            <div class="part-info">
+                                <h5>Датчик массового расхода воздуха</h5>
+                                <p class="part-number">Артикул: BOSCH-0280218004</p>
+                                <p class="part-description">Датчик MAF для двигателя 4B11</p>
+                                <span class="necessity-badge required">Обязательно</span>
+                            </div>
+                            <div class="part-price">
+                                <span class="price">95.50 EUR</span>
+                                <div class="part-actions">
+                                    <button class="btn btn-sm btn-primary" onclick="testBuyPart('BOSCH-0280218004', 'Датчик массового расхода воздуха')">
+                                        <i class="fas fa-shopping-cart"></i>
+                                        Купить
+                                    </button>
+                                    <button class="btn btn-sm btn-secondary" onclick="testComparePartPrices('BOSCH-0280218004', 'Датчик массового расхода воздуха')">
+                                        <i class="fas fa-balance-scale"></i>
+                                        Сравнить
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { ErrorCodesComponent } from './js/components/errorCodes.js';
+        
+        // Initialize the component
+        const errorCodesComponent = new ErrorCodesComponent();
+        
+        // Make it globally accessible
+        window.errorCodesComponent = errorCodesComponent;
+        
+        // Test functions
+        window.testBuyPart = function(partNumber, partName) {
+            console.log('Testing buyPart:', partNumber, partName);
+            errorCodesComponent.buyPart(partNumber, partName);
+        };
+        
+        window.testComparePartPrices = function(partNumber, partName) {
+            console.log('Testing comparePartPrices:', partNumber, partName);
+            errorCodesComponent.comparePartPrices(partNumber, partName);
+        };
+        
+        console.log('Test page loaded. ErrorCodesComponent initialized.');
+    </script>
+</body>
+</html>

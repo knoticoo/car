@@ -229,6 +229,10 @@ export class ErrorCodesComponent {
         const necessityText = part.necessity === 'required' ? 'Обязательно' : 
                              part.necessity === 'recommended' ? 'Рекомендуется' : 'Возможно';
         
+        // Escape quotes in part name and part number for onclick handlers
+        const safePartName = part.name.replace(/'/g, "\\'");
+        const safePartNumber = part.partNumber.replace(/'/g, "\\'");
+        
         return `
             <div class="part-item ${necessityClass}">
                 <div class="part-info">
@@ -240,11 +244,11 @@ export class ErrorCodesComponent {
                 <div class="part-price">
                     <span class="price">${formatCurrency(part.price, part.currency)}</span>
                     <div class="part-actions">
-                        <button class="btn btn-sm btn-primary" onclick="window.errorCodesComponent.buyPart('${part.partNumber}', '${part.name}')">
+                        <button class="btn btn-sm btn-primary" onclick="window.errorCodesComponent.buyPart('${safePartNumber}', '${safePartName}')">
                             <i class="fas fa-shopping-cart"></i>
                             Купить
                         </button>
-                        <button class="btn btn-sm btn-secondary" onclick="window.errorCodesComponent.comparePartPrices('${part.partNumber}', '${part.name}')">
+                        <button class="btn btn-sm btn-secondary" onclick="window.errorCodesComponent.comparePartPrices('${safePartNumber}', '${safePartName}')">
                             <i class="fas fa-balance-scale"></i>
                             Сравнить
                         </button>
@@ -256,26 +260,39 @@ export class ErrorCodesComponent {
 
     async buyPart(partNumber, partName) {
         try {
+            // Show loading notification
+            this.showNotification('Поиск цен...', 'info');
+            
             // Get real-time prices for the part
             const priceData = await this.priceScraper.scrapePartPrice(partNumber, partName);
             
-            if (priceData && priceData.prices.length > 0) {
+            if (priceData && priceData.prices && priceData.prices.length > 0) {
                 // Show price comparison modal
                 this.showPartPurchaseModal(partNumber, partName, priceData);
             } else {
                 // Fallback to parts catalog
+                this.showNotification('Цены не найдены, переход в каталог запчастей', 'warning');
                 this.redirectToPartsCatalog(partNumber);
             }
         } catch (error) {
             console.error('Error getting part prices:', error);
+            this.showNotification('Ошибка при получении цен, переход в каталог запчастей', 'error');
             this.redirectToPartsCatalog(partNumber);
         }
     }
 
     async comparePartPrices(partNumber, partName) {
         try {
+            // Show loading notification
+            this.showNotification('Сравнение цен...', 'info');
+            
             const comparison = await this.priceScraper.comparePrices(partNumber, partName);
-            this.showPriceComparisonModal(partNumber, partName, comparison);
+            
+            if (comparison && comparison.prices && comparison.prices.length > 0) {
+                this.showPriceComparisonModal(partNumber, partName, comparison);
+            } else {
+                this.showNotification('Цены для сравнения не найдены', 'warning');
+            }
         } catch (error) {
             console.error('Error comparing prices:', error);
             this.showNotification('Ошибка при сравнении цен', 'error');

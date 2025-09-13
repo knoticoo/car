@@ -280,6 +280,26 @@ export const errorCodes = {
                 "Проверить датчики положения селектора",
                 "Диагностика в сервисе"
             ],
+            requiredParts: [
+                {
+                    name: "Масло для АКПП",
+                    partNumber: "MITSUBISHI-ATF-SP3",
+                    category: "transmission",
+                    necessity: "required",
+                    price: 25.90,
+                    currency: "EUR",
+                    description: "Масло для автоматической коробки передач SP-III"
+                },
+                {
+                    name: "Фильтр АКПП",
+                    partNumber: "MITSUBISHI-ATF-FILTER",
+                    category: "transmission",
+                    necessity: "recommended",
+                    price: 45.80,
+                    currency: "EUR",
+                    description: "Фильтр для автоматической коробки передач"
+                }
+            ],
             difficulty: "Сложно",
             time: "1-3 часа",
             cost: "50-250 EUR",
@@ -355,6 +375,26 @@ export const errorCodes = {
                 "Проверить реле и предохранители",
                 "Проверить проводку зарядки",
                 "Проверить регулятор напряжения"
+            ],
+            requiredParts: [
+                {
+                    name: "Аккумулятор",
+                    partNumber: "VARTA-E44",
+                    category: "electrical",
+                    necessity: "possible",
+                    price: 145.90,
+                    currency: "EUR",
+                    description: "Аккумулятор 74Ah, 680A"
+                },
+                {
+                    name: "Генератор",
+                    partNumber: "VALEO-440120",
+                    category: "electrical",
+                    necessity: "possible",
+                    price: 285.50,
+                    currency: "EUR",
+                    description: "Генератор 120A VALEO"
+                }
             ],
             difficulty: "Легко",
             time: "30-60 минут",
@@ -453,6 +493,35 @@ export const errorCodes = {
                 "Проверить блок управления ABS",
                 "Проверить тормозную жидкость",
                 "Проверить тормозные диски и колодки"
+            ],
+            requiredParts: [
+                {
+                    name: "Тормозные колодки передние",
+                    partNumber: "BREMBO-P85001",
+                    category: "brakes",
+                    necessity: "recommended",
+                    price: 65.20,
+                    currency: "EUR",
+                    description: "Комплект тормозных колодок передних колес BREMBO"
+                },
+                {
+                    name: "Тормозные диски передние",
+                    partNumber: "BREMBO-09.A407.11",
+                    category: "brakes",
+                    necessity: "recommended",
+                    price: 89.90,
+                    currency: "EUR",
+                    description: "Тормозные диски передних колес BREMBO (2 шт.)"
+                },
+                {
+                    name: "Тормозная жидкость",
+                    partNumber: "DOT4-1L",
+                    category: "brakes",
+                    necessity: "required",
+                    price: 8.50,
+                    currency: "EUR",
+                    description: "Тормозная жидкость DOT4, 1 литр"
+                }
             ],
             difficulty: "Средне",
             time: "1-2 часа",
