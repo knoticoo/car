@@ -226,6 +226,39 @@ class MitsubishiASXApp {
                             ${errorCode.solutions.map(solution => `<li>${solution}</li>`).join('')}
                         </ol>
                     </div>
+
+                    ${errorCode.requiredParts && errorCode.requiredParts.length > 0 ? `
+                        <div class="error-parts">
+                            <h5><i class="fas fa-shopping-cart"></i> Необходимые запчасти:</h5>
+                            <div class="parts-list">
+                                ${errorCode.requiredParts.map(part => `
+                                    <div class="part-item ${part.necessity}">
+                                        <div class="part-info">
+                                            <h6>${part.name}</h6>
+                                            <p class="part-number">Артикул: ${part.partNumber}</p>
+                                            <p class="part-description">${part.description}</p>
+                                            <span class="necessity-badge ${part.necessity}">
+                                                ${part.necessity === 'required' ? 'Обязательно' : 'Рекомендуется'}
+                                            </span>
+                                        </div>
+                                        <div class="part-price">
+                                            <span class="price">${part.price.toFixed(2)} ${part.currency}</span>
+                                            <div class="part-actions">
+                                                <button class="btn btn-sm btn-primary" onclick="app.buyPart('${part.partNumber}', '${part.name}', 'Auto Parts Latvia')">
+                                                    <i class="fas fa-shopping-cart"></i>
+                                                    Купить
+                                                </button>
+                                                <button class="btn btn-sm btn-secondary" onclick="app.comparePrices('${part.partNumber}')">
+                                                    <i class="fas fa-balance-scale"></i>
+                                                    Сравнить
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
                 </div>
             `;
         });
@@ -350,6 +383,9 @@ class MitsubishiASXApp {
                     <div class="part-actions">
                         <button class="btn btn-primary" onclick="app.showPartDetails('${part.partNumber}')">
                             <i class="fas fa-info-circle"></i> Подробнее
+                        </button>
+                        <button class="btn btn-success" onclick="app.buyPart('${part.partNumber}', '${part.name}', '${part.supplier}')" ${!part.inStock ? 'disabled' : ''}>
+                            <i class="fas fa-shopping-cart"></i> ${part.inStock ? 'Купить' : 'Нет в наличии'}
                         </button>
                         <button class="btn btn-secondary" onclick="app.comparePrices('${part.partNumber}')">
                             <i class="fas fa-balance-scale"></i> Сравнить цены
@@ -483,6 +519,78 @@ class MitsubishiASXApp {
 
     comparePrices(partNumber) {
         alert(`Функция сравнения цен для ${partNumber} будет доступна в следующей версии.`);
+    }
+
+    buyPart(partNumber, partName, supplierName) {
+        if (!this.suppliers || !this.suppliers[supplierName]) {
+            alert(`Информация о поставщике "${supplierName}" не найдена.`);
+            return;
+        }
+
+        const supplier = this.suppliers[supplierName];
+        
+        // Create search URL for the supplier
+        const searchUrl = supplier.url ? `${supplier.url}${encodeURIComponent(partNumber)}` : supplier.website;
+        
+        // Open supplier website in new tab
+        if (searchUrl) {
+            window.open(searchUrl, '_blank');
+            this.showNotification(`Переход на сайт ${supplier.name} для покупки ${partName}`, 'info');
+        } else {
+            alert(`Сайт поставщика "${supplier.name}" недоступен.\n\nКонтактная информация:\nАдрес: ${supplier.address}\nТелефон: ${supplier.phone}\nEmail: ${supplier.email}`);
+        }
+    }
+
+    showNotification(message, type = 'info') {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.innerHTML = `
+            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+            <span>${message}</span>
+        `;
+        
+        // Add styles if not already present
+        if (!document.querySelector('#notification-styles')) {
+            const style = document.createElement('style');
+            style.id = 'notification-styles';
+            style.textContent = `
+                .notification {
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: #2a5298;
+                    color: white;
+                    padding: 12px 20px;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                    z-index: 1000;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    font-size: 14px;
+                    max-width: 300px;
+                    animation: slideIn 0.3s ease-out;
+                }
+                .notification-success { background: #28a745; }
+                .notification-error { background: #dc3545; }
+                .notification-warning { background: #ffc107; color: #000; }
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        document.body.appendChild(notification);
+        
+        // Auto remove after 3 seconds
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 3000);
     }
 }
 
