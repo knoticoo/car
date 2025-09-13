@@ -546,7 +546,8 @@ export const suppliers = {
         address: "Rīga, Brīvības iela 123",
         phone: "+371 20012345",
         email: "info@autoparts.lv",
-        website: "www.autoparts.lv",
+        website: "https://www.autoparts.lv",
+        url: "https://www.autoparts.lv/search?q=",
         rating: 4.5,
         delivery: "1-2 дня",
         payment: ["Наличные", "Карта", "Банковский перевод"]
@@ -556,7 +557,8 @@ export const suppliers = {
         address: "Rīga, Krasta iela 45",
         phone: "+371 20012346",
         email: "info@rigaautoparts.lv",
-        website: "www.rigaautoparts.lv",
+        website: "https://www.rigaautoparts.lv",
+        url: "https://www.rigaautoparts.lv/search?query=",
         rating: 4.3,
         delivery: "1-3 дня",
         payment: ["Наличные", "Карта", "Рассрочка"]
@@ -566,7 +568,8 @@ export const suppliers = {
         address: "Daugavpils, Vienības iela 78",
         phone: "+371 20012347",
         email: "info@daugavpilsauto.lv",
-        website: "www.daugavpilsauto.lv",
+        website: "https://www.daugavpilsauto.lv",
+        url: "https://www.daugavpilsauto.lv/search?part=",
         rating: 4.4,
         delivery: "2-4 дня",
         payment: ["Наличные", "Карта"]
@@ -576,7 +579,8 @@ export const suppliers = {
         address: "Liepāja, Lielā iela 12",
         phone: "+371 20012348",
         email: "info@liepajaparts.lv",
-        website: "www.liepajaparts.lv",
+        website: "https://www.liepajaparts.lv",
+        url: "https://www.liepajaparts.lv/catalog?search=",
         rating: 4.2,
         delivery: "2-3 дня",
         payment: ["Наличные", "Карта", "Банковский перевод"]
@@ -586,7 +590,8 @@ export const suppliers = {
         address: "Ventspils, Jūras iela 34",
         phone: "+371 20012349",
         email: "info@ventspilsauto.lv",
-        website: "www.ventspilsauto.lv",
+        website: "https://www.ventspilsauto.lv",
+        url: "https://www.ventspilsauto.lv/parts?q=",
         rating: 4.1,
         delivery: "3-5 дней",
         payment: ["Наличные", "Карта"]
@@ -596,7 +601,8 @@ export const suppliers = {
         address: "Rīga, Brīvības iela 200",
         phone: "+371 20012350",
         email: "info@partversal.lv",
-        website: "www.partversal.lv",
+        website: "https://www.partversal.lv",
+        url: "https://www.partversal.lv/search?term=",
         rating: 4.6,
         delivery: "1-2 дня",
         payment: ["Наличные", "Карта", "Банковский перевод", "Рассрочка"]
