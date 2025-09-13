@@ -22,6 +22,33 @@ export const errorCodes = {
                 "Проверить напряжение питания датчика (12В)",
                 "Заменить датчик при необходимости"
             ],
+            requiredParts: [
+                {
+                    name: "Датчик массового расхода воздуха",
+                    partNumber: "BOSCH-0280218004",
+                    category: "engine",
+                    necessity: "required",
+                    price: 95.50,
+                    currency: "EUR",
+                    description: "Датчик MAF для двигателя 4B11"
+                },
+                {
+                    name: "Очиститель датчиков",
+                    partNumber: "CLEANER-MAF-400ML",
+                    category: "maintenance",
+                    necessity: "recommended",
+                    price: 12.80,
+                    currency: "EUR",
+                    description: "Специальный очиститель для датчиков"
+                }
+            ],
+            tools: [
+                "Отвертка крестовая",
+                "Торцевой ключ 10мм",
+                "Мультиметр",
+                "Очиститель датчиков",
+                "Тряпки"
+            ],
             difficulty: "Средне",
             time: "30-60 минут",
             cost: "50-150 EUR",
@@ -47,6 +74,42 @@ export const errorCodes = {
                 "Проверить компрессию в цилиндре",
                 "Проверить топливный фильтр",
                 "Проверить систему зажигания"
+            ],
+            requiredParts: [
+                {
+                    name: "Свечи зажигания NGK",
+                    partNumber: "NGK-ILZKR7B-11",
+                    category: "engine",
+                    necessity: "required",
+                    price: 35.50,
+                    currency: "EUR",
+                    description: "Комплект свечей зажигания (4 шт.)"
+                },
+                {
+                    name: "Катушка зажигания",
+                    partNumber: "BOSCH-0221604001",
+                    category: "engine",
+                    necessity: "possible",
+                    price: 85.90,
+                    currency: "EUR",
+                    description: "Катушка зажигания для цилиндра 1"
+                },
+                {
+                    name: "Топливный фильтр",
+                    partNumber: "MAHLE-KL83",
+                    category: "engine",
+                    necessity: "recommended",
+                    price: 22.40,
+                    currency: "EUR",
+                    description: "Топливный фильтр для двигателя 4B11"
+                }
+            ],
+            tools: [
+                "Свечной ключ 16мм",
+                "Динамометрический ключ",
+                "Отвертка",
+                "Компрессометр",
+                "Тряпки"
             ],
             difficulty: "Легко",
             time: "1-2 часа",
