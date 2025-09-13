@@ -6,20 +6,32 @@ import { TroubleshootingComponent } from './components/troubleshooting.js';
 import { MaintenanceComponent } from './components/maintenance.js';
 import { PartsComponent } from './components/parts.js';
 import { isMobileDevice, storage, notificationManager } from './utils/helpers.js';
+import CarAPI from './services/api.js';
+import PartsScraper from './utils/scraper.js';
 
 class MitsubishiASXApp {
     constructor() {
         this.currentSection = 'home';
         this.isMobile = false;
         this.components = {};
+        this.api = CarAPI;
+        this.scraper = PartsScraper;
         this.init();
     }
 
-    init() {
+    async init() {
         console.log('Initializing Mitsubishi ASX 2011 Helper App...');
         
         // Check if mobile
         this.isMobile = isMobileDevice();
+        
+        // Initialize API
+        try {
+            await this.api.initialize();
+            console.log('API initialized successfully');
+        } catch (error) {
+            console.error('Failed to initialize API:', error);
+        }
         
         // Initialize components
         this.initializeComponents();
@@ -31,7 +43,7 @@ class MitsubishiASXApp {
         this.setupMobileFeatures();
         
         // Load initial data
-        this.loadInitialData();
+        await this.loadInitialData();
         
         console.log('App initialization complete');
     }
@@ -256,9 +268,22 @@ class MitsubishiASXApp {
         `;
     }
 
-    loadInitialData() {
+    async loadInitialData() {
         // Load any initial data needed
         console.log('Loading initial data...');
+        
+        try {
+            // Preload commonly used data
+            await this.api.preloadData();
+            
+            // Load dashboard data
+            const dashboardData = await this.api.getDashboardData();
+            this.dashboardData = dashboardData;
+            
+            console.log('Initial data loaded successfully');
+        } catch (error) {
+            console.error('Error loading initial data:', error);
+        }
     }
 
     // Mobile navigation removed for PWA
@@ -321,6 +346,88 @@ class MitsubishiASXApp {
 
     showNotification(message, type = 'info') {
         notificationManager.show(message, type);
+    }
+
+    // Enhanced API methods
+    async searchAll(query) {
+        try {
+            return await this.api.searchAll(query);
+        } catch (error) {
+            console.error('Search error:', error);
+            return null;
+        }
+    }
+
+    async getPartDetails(partNumber) {
+        try {
+            return await this.api.getPartDetails(partNumber);
+        } catch (error) {
+            console.error('Error getting part details:', error);
+            return null;
+        }
+    }
+
+    async getErrorCodeDetails(code) {
+        try {
+            return await this.api.getErrorCodeDetails(code);
+        } catch (error) {
+            console.error('Error getting error code details:', error);
+            return null;
+        }
+    }
+
+    async comparePrices(partNumber) {
+        try {
+            return await this.scraper.comparePrices(partNumber);
+        } catch (error) {
+            console.error('Error comparing prices:', error);
+            return null;
+        }
+    }
+
+    async getAvailabilityStatus(partNumber) {
+        try {
+            return await this.scraper.getAvailabilityStatus(partNumber);
+        } catch (error) {
+            console.error('Error getting availability status:', error);
+            return null;
+        }
+    }
+
+    async addMaintenanceRecord(record) {
+        try {
+            return await this.api.addMaintenanceRecord(record);
+        } catch (error) {
+            console.error('Error adding maintenance record:', error);
+            return null;
+        }
+    }
+
+    async getRepairGuide(title) {
+        try {
+            return await this.api.getRepairGuide(title);
+        } catch (error) {
+            console.error('Error getting repair guide:', error);
+            return null;
+        }
+    }
+
+    async getMaintenanceStats() {
+        try {
+            return await this.api.getMaintenanceStats();
+        } catch (error) {
+            console.error('Error getting maintenance stats:', error);
+            return null;
+        }
+    }
+
+    async getPartsStats() {
+        try {
+            return await this.api.getPartsStats();
+        } catch (error) {
+            console.error('Error getting parts stats:', error);
+            return null;
+        }
     }
 }
 

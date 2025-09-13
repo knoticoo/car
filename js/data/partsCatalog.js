@@ -348,6 +348,194 @@ export const partsCatalog = {
             icon: "fas fa-car",
             inStock: true,
             rating: 4.1
+        },
+        {
+            name: "Дверь передняя левая",
+            partNumber: "MITSUBISHI-ASX-DOOR-LF",
+            price: 450.80,
+            currency: "EUR",
+            supplier: "Partversal.lv",
+            description: "Передняя левая дверь в сборе",
+            category: "body",
+            difficulty: "Сложно",
+            time: "4 часа",
+            icon: "fas fa-car",
+            inStock: true,
+            rating: 4.3
+        },
+        {
+            name: "Капот",
+            partNumber: "MITSUBISHI-ASX-HOOD",
+            price: 320.50,
+            currency: "EUR",
+            supplier: "Riga Body Parts",
+            description: "Капот двигателя",
+            category: "body",
+            difficulty: "Средне",
+            time: "2 часа",
+            icon: "fas fa-car",
+            inStock: true,
+            rating: 4.2
+        },
+        {
+            name: "Крышка багажника",
+            partNumber: "MITSUBISHI-ASX-TRUNK-LID",
+            price: 380.90,
+            currency: "EUR",
+            supplier: "Partversal.lv",
+            description: "Крышка багажника с замком",
+            category: "body",
+            difficulty: "Средне",
+            time: "2.5 часа",
+            icon: "fas fa-car",
+            inStock: true,
+            rating: 4.1
+        }
+    ],
+    interior: [
+        {
+            name: "Руль",
+            partNumber: "MITSUBISHI-ASX-STEERING-WHEEL",
+            price: 125.60,
+            currency: "EUR",
+            supplier: "Riga Interior Parts",
+            description: "Руль с подушкой безопасности",
+            category: "interior",
+            difficulty: "Сложно",
+            time: "3 часа",
+            icon: "fas fa-car",
+            inStock: true,
+            rating: 4.5
+        },
+        {
+            name: "Сиденье водителя",
+            partNumber: "MITSUBISHI-ASX-SEAT-DRIVER",
+            price: 285.90,
+            currency: "EUR",
+            supplier: "Riga Interior Parts",
+            description: "Сиденье водителя с подогревом",
+            category: "interior",
+            difficulty: "Средне",
+            time: "2 часа",
+            icon: "fas fa-chair",
+            inStock: true,
+            rating: 4.3
+        },
+        {
+            name: "Панель приборов",
+            partNumber: "MITSUBISHI-ASX-DASHBOARD",
+            price: 450.80,
+            currency: "EUR",
+            supplier: "Partversal.lv",
+            description: "Панель приборов в сборе",
+            category: "interior",
+            difficulty: "Сложно",
+            time: "4 часа",
+            icon: "fas fa-tachometer-alt",
+            inStock: true,
+            rating: 4.2
+        },
+        {
+            name: "Коврики салона",
+            partNumber: "MITSUBISHI-ASX-MATS",
+            price: 45.90,
+            currency: "EUR",
+            supplier: "Riga Interior Parts",
+            description: "Комплект ковриков для салона",
+            category: "interior",
+            difficulty: "Легко",
+            time: "5 минут",
+            icon: "fas fa-square",
+            inStock: true,
+            rating: 4.4
+        }
+    ],
+    exhaust: [
+        {
+            name: "Глушитель",
+            partNumber: "MITSUBISHI-ASX-MUFFLER",
+            price: 125.80,
+            currency: "EUR",
+            supplier: "Riga Exhaust Parts",
+            description: "Глушитель задний",
+            category: "exhaust",
+            difficulty: "Средне",
+            time: "1.5 часа",
+            icon: "fas fa-car",
+            inStock: true,
+            rating: 4.2
+        },
+        {
+            name: "Катализатор",
+            partNumber: "MITSUBISHI-ASX-CATALYST",
+            price: 485.90,
+            currency: "EUR",
+            supplier: "Riga Exhaust Parts",
+            description: "Каталитический нейтрализатор",
+            category: "exhaust",
+            difficulty: "Сложно",
+            time: "2.5 часа",
+            icon: "fas fa-recycle",
+            inStock: true,
+            rating: 4.1
+        },
+        {
+            name: "Труба выхлопная",
+            partNumber: "MITSUBISHI-ASX-EXHAUST-PIPE",
+            price: 85.60,
+            currency: "EUR",
+            supplier: "Riga Exhaust Parts",
+            description: "Средняя труба выхлопной системы",
+            category: "exhaust",
+            difficulty: "Средне",
+            time: "1 час",
+            icon: "fas fa-car",
+            inStock: true,
+            rating: 4.3
+        }
+    ],
+    cooling: [
+        {
+            name: "Радиатор",
+            partNumber: "MITSUBISHI-ASX-RADIATOR",
+            price: 185.90,
+            currency: "EUR",
+            supplier: "Riga Cooling Parts",
+            description: "Радиатор системы охлаждения",
+            category: "cooling",
+            difficulty: "Средне",
+            time: "2 часа",
+            icon: "fas fa-thermometer-half",
+            inStock: true,
+            rating: 4.4
+        },
+        {
+            name: "Термостат",
+            partNumber: "MITSUBISHI-ASX-THERMOSTAT",
+            price: 35.80,
+            currency: "EUR",
+            supplier: "Riga Cooling Parts",
+            description: "Термостат системы охлаждения",
+            category: "cooling",
+            difficulty: "Средне",
+            time: "1 час",
+            icon: "fas fa-thermometer-half",
+            inStock: true,
+            rating: 4.2
+        },
+        {
+            name: "Патрубок радиатора",
+            partNumber: "MITSUBISHI-ASX-RADIATOR-HOSE",
+            price: 25.60,
+            currency: "EUR",
+            supplier: "Riga Cooling Parts",
+            description: "Патрубок верхний радиатора",
+            category: "cooling",
+            difficulty: "Легко",
+            time: "30 минут",
+            icon: "fas fa-car",
+            inStock: true,
+            rating: 4.1
         }
     ]
 };
@@ -402,5 +590,95 @@ export const suppliers = {
         rating: 4.1,
         delivery: "3-5 дней",
         payment: ["Наличные", "Карта"]
+    },
+    "Partversal.lv": {
+        name: "Partversal.lv",
+        address: "Rīga, Brīvības iela 200",
+        phone: "+371 20012350",
+        email: "info@partversal.lv",
+        website: "www.partversal.lv",
+        rating: 4.6,
+        delivery: "1-2 дня",
+        payment: ["Наличные", "Карта", "Банковский перевод", "Рассрочка"]
+    },
+    "Riga Body Parts": {
+        name: "Riga Body Parts",
+        address: "Rīga, Krasta iela 78",
+        phone: "+371 20012351",
+        email: "info@rigabodyparts.lv",
+        website: "www.rigabodyparts.lv",
+        rating: 4.3,
+        delivery: "2-3 дня",
+        payment: ["Наличные", "Карта", "Банковский перевод"]
+    },
+    "Riga Interior Parts": {
+        name: "Riga Interior Parts",
+        address: "Rīga, Maskavas iela 45",
+        phone: "+371 20012352",
+        email: "info@rigainterior.lv",
+        website: "www.rigainterior.lv",
+        rating: 4.4,
+        delivery: "1-3 дня",
+        payment: ["Наличные", "Карта", "Рассрочка"]
+    },
+    "Riga Exhaust Parts": {
+        name: "Riga Exhaust Parts",
+        address: "Rīga, Brīvības iela 156",
+        phone: "+371 20012353",
+        email: "info@rigaexhaust.lv",
+        website: "www.rigaexhaust.lv",
+        rating: 4.2,
+        delivery: "2-4 дня",
+        payment: ["Наличные", "Карта"]
+    },
+    "Riga Cooling Parts": {
+        name: "Riga Cooling Parts",
+        address: "Rīga, Krasta iela 89",
+        phone: "+371 20012354",
+        email: "info@rigacooling.lv",
+        website: "www.rigacooling.lv",
+        rating: 4.5,
+        delivery: "1-2 дня",
+        payment: ["Наличные", "Карта", "Банковский перевод"]
+    },
+    "Riga Brake Parts": {
+        name: "Riga Brake Parts",
+        address: "Rīga, Brīvības iela 234",
+        phone: "+371 20012355",
+        email: "info@rigabrake.lv",
+        website: "www.rigabrake.lv",
+        rating: 4.7,
+        delivery: "1-2 дня",
+        payment: ["Наличные", "Карта", "Рассрочка"]
+    },
+    "Riga Suspension": {
+        name: "Riga Suspension",
+        address: "Rīga, Maskavas iela 123",
+        phone: "+371 20012356",
+        email: "info@rigasuspension.lv",
+        website: "www.rigasuspension.lv",
+        rating: 4.4,
+        delivery: "2-3 дня",
+        payment: ["Наличные", "Карта"]
+    },
+    "Riga Battery Center": {
+        name: "Riga Battery Center",
+        address: "Rīga, Krasta iela 67",
+        phone: "+371 20012357",
+        email: "info@rigabattery.lv",
+        website: "www.rigabattery.lv",
+        rating: 4.6,
+        delivery: "1 день",
+        payment: ["Наличные", "Карта", "Рассрочка"]
+    },
+    "Liepaja Electrical": {
+        name: "Liepaja Electrical",
+        address: "Liepāja, Lielā iela 45",
+        phone: "+371 20012358",
+        email: "info@liepajaelectrical.lv",
+        website: "www.liepajaelectrical.lv",
+        rating: 4.3,
+        delivery: "2-4 дня",
+        payment: ["Наличные", "Карта", "Банковский перевод"]
     }
 };
