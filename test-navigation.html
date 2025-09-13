@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Navigation</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-car"></i>
+                <h1>Помощник</h1>
+                <span>Mitsubishi ASX 2011</span>
+            </div>
+            <nav class="nav">
+                <a href="#home" class="nav-link active">Главная</a>
+                <a href="#error-codes" class="nav-link">Коды ошибок</a>
+                <a href="#troubleshooting" class="nav-link">Диагностика</a>
+                <a href="#maintenance" class="nav-link">Обслуживание</a>
+                <a href="#repairs" class="nav-link">Ремонт</a>
+                <a href="#parts" class="nav-link">Запчасти</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <div class="container">
+                <h2>Главная страница работает!</h2>
+                <p>Навигация должна работать теперь.</p>
+                <div class="quick-actions">
+                    <div class="action-card" onclick="showSection('error-codes')">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>Коды ошибок</h3>
+                        <p>Расшифровка диагностических кодов</p>
+                    </div>
+                    <div class="action-card" onclick="showSection('troubleshooting')">
+                        <i class="fas fa-tools"></i>
+                        <h3>Диагностика</h3>
+                        <p>Пошаговая диагностика проблем</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Error Codes Section -->
+        <section id="error-codes" class="section">
+            <div class="container">
+                <h2>Коды ошибок</h2>
+                <p>Эта страница работает! Навигация функционирует.</p>
+            </div>
+        </section>
+
+        <!-- Troubleshooting Section -->
+        <section id="troubleshooting" class="section">
+            <div class="container">
+                <h2>Диагностика проблем</h2>
+                <p>Эта страница работает! Навигация функционирует.</p>
+            </div>
+        </section>
+
+        <!-- Maintenance Section -->
+        <section id="maintenance" class="section">
+            <div class="container">
+                <h2>Обслуживание и ТО</h2>
+                <p>Эта страница работает! Навигация функционирует.</p>
+            </div>
+        </section>
+
+        <!-- Repairs Section -->
+        <section id="repairs" class="section">
+            <div class="container">
+                <h2>Инструкции по ремонту</h2>
+                <p>Эта страница работает! Навигация функционирует.</p>
+            </div>
+        </section>
+
+        <!-- Parts Section -->
+        <section id="parts" class="section">
+            <div class="container">
+                <h2>Каталог запчастей</h2>
+                <p>Эта страница работает! Навигация функционирует.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Navigation Fix -->
+    <script src="navigation-fix.js"></script>
+</body>
+</html>
