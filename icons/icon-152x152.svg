@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="152" height="152" viewBox="0 0 152 152" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2a5298;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e3c72;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="152" height="152" fill="url(#bg)" rx="15.200000000000001"/>
+  <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="60.800000000000004" 
+        text-anchor="middle" dominant-baseline="middle" fill="#ffd700">🚗</text>
+  <rect width="152" height="152" fill="none" stroke="#ffffff" stroke-width="3.04" rx="15.200000000000001"/>
+</svg>
