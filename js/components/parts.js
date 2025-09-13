@@ -1,8 +1,9 @@
 // Parts Component for Mitsubishi ASX 2011
-// Handles parts catalog and ordering
+// Handles parts catalog and ordering with real-time pricing
 
 import { partsCatalog, suppliers } from '../data/partsCatalog.js';
 import { searchItems, filterByCategory, formatCurrency } from '../utils/helpers.js';
+import PriceScraper from '../services/priceScraper.js';
 
 export class PartsComponent {
     constructor() {
@@ -11,6 +12,9 @@ export class PartsComponent {
         this.currentCategory = '';
         this.cart = this.loadCart();
         this.allParts = this.getAllParts();
+        this.priceScraper = new PriceScraper();
+        this.realTimePrices = new Map();
+        this.isLoadingPrices = false;
     }
 
     init(containerId) {
@@ -84,6 +88,16 @@ export class PartsComponent {
         }
 
         this.container.innerHTML = `
+            <div class="parts-controls">
+                <button class="btn btn-primary" onclick="window.partsComponent.loadRealTimePrices()" ${this.isLoadingPrices ? 'disabled' : ''}>
+                    <i class="fas fa-sync-alt ${this.isLoadingPrices ? 'fa-spin' : ''}"></i>
+                    ${this.isLoadingPrices ? 'Загрузка...' : 'Загрузить актуальные цены'}
+                </button>
+                <button class="btn btn-secondary" onclick="window.partsComponent.refreshAllPrices()">
+                    <i class="fas fa-refresh"></i>
+                    Обновить все цены
+                </button>
+            </div>
             <div class="parts-grid">
                 ${filteredParts.map(part => this.renderPartCard(part)).join('')}
             </div>
@@ -93,6 +107,17 @@ export class PartsComponent {
     renderPartCard(part) {
         const difficultyClass = part.difficulty.toLowerCase();
         const inStockClass = part.inStock ? 'in-stock' : 'out-of-stock';
+        const realTimePrice = this.realTimePrices.get(part.partNumber);
+        const hasRealTimePrice = realTimePrice && realTimePrice.prices && realTimePrice.prices.length > 0;
+        
+        // Get best price from real-time data or use fallback
+        const bestPrice = hasRealTimePrice ? 
+            realTimePrice.prices.reduce((best, current) => current.price < best.price ? current : best) : 
+            null;
+        
+        const displayPrice = bestPrice ? bestPrice.price : part.price;
+        const displaySupplier = bestPrice ? bestPrice.supplier : part.supplier;
+        const supplierInfo = bestPrice ? bestPrice.supplierInfo : suppliers[part.supplier];
         
         return `
             <div class="part-card ${inStockClass}">
@@ -102,11 +127,12 @@ export class PartsComponent {
                     <span class="stock-status ${inStockClass}">
                         ${part.inStock ? 'В наличии' : 'Нет в наличии'}
                     </span>
+                    ${hasRealTimePrice ? '<span class="real-time-badge"><i class="fas fa-sync-alt"></i> Актуальная цена</span>' : ''}
                 </div>
                 
                 <div class="part-details">
                     <p class="part-number">Артикул: ${part.partNumber}</p>
-                    <p class="supplier">Поставщик: ${part.supplier}</p>
+                    <p class="supplier">Поставщик: ${displaySupplier}</p>
                     <p class="description">${part.description}</p>
                     
                     <div class="part-info">
@@ -125,16 +151,56 @@ export class PartsComponent {
                     </div>
                     
                     <div class="part-price">
-                        <span class="price">${formatCurrency(part.price, part.currency)}</span>
-                        <button 
-                            class="add-to-cart-btn" 
-                            onclick="window.partsComponent.addToCart('${part.partNumber}')"
-                            ${!part.inStock ? 'disabled' : ''}
-                        >
-                            <i class="fas fa-cart-plus"></i>
-                            ${part.inStock ? 'В корзину' : 'Нет в наличии'}
-                        </button>
+                        <div class="price-container">
+                            <span class="price">${formatCurrency(displayPrice, part.currency)}</span>
+                            ${bestPrice && bestPrice.originalPrice && bestPrice.originalPrice > displayPrice ? 
+                                `<span class="original-price">${formatCurrency(bestPrice.originalPrice, part.currency)}</span>` : ''}
+                            ${bestPrice && bestPrice.discount > 0 ? 
+                                `<span class="discount">-${bestPrice.discount}%</span>` : ''}
+                        </div>
+                        
+                        <div class="price-actions">
+                            <button 
+                                class="add-to-cart-btn" 
+                                onclick="window.partsComponent.addToCart('${part.partNumber}')"
+                                ${!part.inStock ? 'disabled' : ''}
+                            >
+                                <i class="fas fa-cart-plus"></i>
+                                ${part.inStock ? 'В корзину' : 'Нет в наличии'}
+                            </button>
+                            
+                            ${supplierInfo && supplierInfo.website ? `
+                                <button 
+                                    class="visit-supplier-btn" 
+                                    onclick="window.partsComponent.visitSupplier('${part.partNumber}', '${displaySupplier}')"
+                                    title="Перейти на сайт поставщика"
+                                >
+                                    <i class="fas fa-external-link-alt"></i>
+                                    Купить
+                                </button>
+                            ` : ''}
+                            
+                            <button 
+                                class="compare-prices-btn" 
+                                onclick="window.partsComponent.comparePrices('${part.partNumber}', '${part.name}')"
+                                title="Сравнить цены"
+                            >
+                                <i class="fas fa-balance-scale"></i>
+                                Сравнить
+                            </button>
+                        </div>
                     </div>
+                    
+                    ${hasRealTimePrice && realTimePrice.prices.length > 1 ? `
+                        <div class="price-alternatives">
+                            <small>Другие поставщики:</small>
+                            ${realTimePrice.prices.slice(1, 4).map(price => `
+                                <span class="alt-price" onclick="window.partsComponent.visitSupplier('${part.partNumber}', '${price.supplier}')">
+                                    ${price.supplier}: ${formatCurrency(price.price, part.currency)}
+                                </span>
+                            `).join('')}
+                        </div>
+                    ` : ''}
                 </div>
             </div>
         `;
@@ -340,5 +406,150 @@ export class PartsComponent {
             searchInput.value = query;
         }
         this.render();
+    }
+
+    // Real-time pricing methods
+    async loadRealTimePrices() {
+        if (this.isLoadingPrices) return;
+        
+        this.isLoadingPrices = true;
+        const loadingIndicator = document.createElement('div');
+        loadingIndicator.className = 'price-loading';
+        loadingIndicator.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Загрузка актуальных цен...';
+        this.container.appendChild(loadingIndicator);
+
+        try {
+            const filteredParts = this.getFilteredParts();
+            const promises = filteredParts.slice(0, 10).map(part => 
+                this.priceScraper.scrapePartPrice(part.partNumber, part.name)
+            );
+
+            const results = await Promise.allSettled(promises);
+            
+            results.forEach((result, index) => {
+                if (result.status === 'fulfilled' && result.value) {
+                    this.realTimePrices.set(filteredParts[index].partNumber, result.value);
+                }
+            });
+
+            this.render(); // Re-render with updated prices
+        } catch (error) {
+            console.error('Error loading real-time prices:', error);
+        } finally {
+            this.isLoadingPrices = false;
+            if (loadingIndicator.parentNode) {
+                loadingIndicator.parentNode.removeChild(loadingIndicator);
+            }
+        }
+    }
+
+    async comparePrices(partNumber, partName) {
+        try {
+            const comparison = await this.priceScraper.comparePrices(partNumber, partName);
+            
+            if (comparison.prices.length === 0) {
+                this.showNotification('Цены не найдены', 'warning');
+                return;
+            }
+
+            // Show price comparison modal
+            this.showPriceComparisonModal(comparison);
+        } catch (error) {
+            console.error('Error comparing prices:', error);
+            this.showNotification('Ошибка при сравнении цен', 'error');
+        }
+    }
+
+    showPriceComparisonModal(comparison) {
+        const modal = document.createElement('div');
+        modal.className = 'price-comparison-modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Сравнение цен: ${comparison.partName}</h3>
+                    <button class="close-modal" onclick="this.closest('.price-comparison-modal').remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="price-comparison">
+                        ${comparison.prices.map((price, index) => `
+                            <div class="price-option ${index === 0 ? 'best-price' : ''}">
+                                <div class="supplier-info">
+                                    <h4>${price.supplier}</h4>
+                                    <p class="supplier-address">${price.supplierInfo.address}</p>
+                                    <p class="supplier-phone">${price.supplierInfo.phone}</p>
+                                </div>
+                                <div class="price-info">
+                                    <div class="price-value">${formatCurrency(price.price, 'EUR')}</div>
+                                    <div class="delivery-time">Доставка: ${price.deliveryTime}</div>
+                                    <div class="availability ${price.availability ? 'available' : 'unavailable'}">
+                                        ${price.availability ? 'В наличии' : 'Нет в наличии'}
+                                    </div>
+                                </div>
+                                <div class="price-actions">
+                                    <button class="btn btn-primary" onclick="window.partsComponent.visitSupplier('${comparison.partNumber}', '${price.supplier}')">
+                                        <i class="fas fa-external-link-alt"></i>
+                                        Перейти к покупке
+                                    </button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="comparison-summary">
+                        <p><strong>Средняя цена:</strong> ${formatCurrency(comparison.averagePrice, 'EUR')}</p>
+                        <p><strong>Экономия:</strong> ${formatCurrency(comparison.mostExpensive.price - comparison.cheapest.price, 'EUR')}</p>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // Close modal on outside click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.remove();
+            }
+        });
+    }
+
+    visitSupplier(partNumber, supplierName) {
+        const supplier = this.priceScraper.suppliers[supplierName];
+        if (!supplier) {
+            this.showNotification('Информация о поставщике не найдена', 'error');
+            return;
+        }
+
+        // Open supplier website with part search
+        const searchUrl = `${supplier.searchUrl}${encodeURIComponent(partNumber)}`;
+        window.open(searchUrl, '_blank');
+        
+        this.showNotification(`Переход на сайт ${supplier.name}`, 'info');
+    }
+
+    showNotification(message, type) {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.innerHTML = `
+            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+            <span>${message}</span>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Auto remove after 3 seconds
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 3000);
+    }
+
+    // Method to refresh all prices
+    async refreshAllPrices() {
+        this.realTimePrices.clear();
+        await this.loadRealTimePrices();
     }
 }

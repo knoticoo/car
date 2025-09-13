@@ -2,7 +2,8 @@
 // Handles display and filtering of error codes
 
 import { errorCodes } from '../data/errorCodes.js';
-import { searchItems, filterByCategory, getDifficultyClass, getSeverityClass } from '../utils/helpers.js';
+import { searchItems, filterByCategory, getDifficultyClass, getSeverityClass, formatCurrency } from '../utils/helpers.js';
+import PriceScraper from '../services/priceScraper.js';
 
 export class ErrorCodesComponent {
     constructor() {
@@ -10,6 +11,8 @@ export class ErrorCodesComponent {
         this.currentFilter = '';
         this.currentCategory = '';
         this.allCodes = this.getAllCodes();
+        this.priceScraper = new PriceScraper();
+        this.realTimePrices = new Map();
     }
 
     getAllCodes() {
@@ -116,6 +119,24 @@ export class ErrorCodesComponent {
                         </ul>
                     </div>
                     
+                    ${code.requiredParts && code.requiredParts.length > 0 ? `
+                        <div class="required-parts">
+                            <h4><i class="fas fa-shopping-cart"></i> Необходимые запчасти:</h4>
+                            <div class="parts-list">
+                                ${code.requiredParts.map(part => this.renderRequiredPart(part)).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                    
+                    ${code.tools && code.tools.length > 0 ? `
+                        <div class="required-tools">
+                            <h4><i class="fas fa-toolbox"></i> Необходимые инструменты:</h4>
+                            <div class="tools-list">
+                                ${code.tools.map(tool => `<span class="tool-tag">${tool}</span>`).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                    
                     <div class="code-info">
                         <span class="difficulty ${difficultyClass}">
                             <i class="fas fa-wrench"></i>
@@ -200,5 +221,221 @@ export class ErrorCodesComponent {
     // Method to get error codes by severity
     getErrorCodesBySeverity(severity) {
         return this.allCodes.filter(errorCode => errorCode.severity === severity);
+    }
+
+    renderRequiredPart(part) {
+        const necessityClass = part.necessity === 'required' ? 'required' : 
+                              part.necessity === 'recommended' ? 'recommended' : 'optional';
+        const necessityText = part.necessity === 'required' ? 'Обязательно' : 
+                             part.necessity === 'recommended' ? 'Рекомендуется' : 'Возможно';
+        
+        return `
+            <div class="part-item ${necessityClass}">
+                <div class="part-info">
+                    <h5>${part.name}</h5>
+                    <p class="part-number">Артикул: ${part.partNumber}</p>
+                    <p class="part-description">${part.description}</p>
+                    <span class="necessity-badge ${necessityClass}">${necessityText}</span>
+                </div>
+                <div class="part-price">
+                    <span class="price">${formatCurrency(part.price, part.currency)}</span>
+                    <div class="part-actions">
+                        <button class="btn btn-sm btn-primary" onclick="window.errorCodesComponent.buyPart('${part.partNumber}', '${part.name}')">
+                            <i class="fas fa-shopping-cart"></i>
+                            Купить
+                        </button>
+                        <button class="btn btn-sm btn-secondary" onclick="window.errorCodesComponent.comparePartPrices('${part.partNumber}', '${part.name}')">
+                            <i class="fas fa-balance-scale"></i>
+                            Сравнить
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    async buyPart(partNumber, partName) {
+        try {
+            // Get real-time prices for the part
+            const priceData = await this.priceScraper.scrapePartPrice(partNumber, partName);
+            
+            if (priceData && priceData.prices.length > 0) {
+                // Show price comparison modal
+                this.showPartPurchaseModal(partNumber, partName, priceData);
+            } else {
+                // Fallback to parts catalog
+                this.redirectToPartsCatalog(partNumber);
+            }
+        } catch (error) {
+            console.error('Error getting part prices:', error);
+            this.redirectToPartsCatalog(partNumber);
+        }
+    }
+
+    async comparePartPrices(partNumber, partName) {
+        try {
+            const comparison = await this.priceScraper.comparePrices(partNumber, partName);
+            this.showPriceComparisonModal(partNumber, partName, comparison);
+        } catch (error) {
+            console.error('Error comparing prices:', error);
+            this.showNotification('Ошибка при сравнении цен', 'error');
+        }
+    }
+
+    showPartPurchaseModal(partNumber, partName, priceData) {
+        const modal = document.createElement('div');
+        modal.className = 'part-purchase-modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Покупка: ${partName}</h3>
+                    <button class="close-modal" onclick="this.closest('.part-purchase-modal').remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="part-details">
+                        <p><strong>Артикул:</strong> ${partNumber}</p>
+                        <p><strong>Название:</strong> ${partName}</p>
+                    </div>
+                    <div class="suppliers-list">
+                        <h4>Доступные поставщики:</h4>
+                        ${priceData.prices.map((price, index) => `
+                            <div class="supplier-option ${index === 0 ? 'best-price' : ''}">
+                                <div class="supplier-info">
+                                    <h5>${price.supplier}</h5>
+                                    <p>${price.supplierInfo.address}</p>
+                                    <p>${price.supplierInfo.phone}</p>
+                                </div>
+                                <div class="price-info">
+                                    <div class="price">${formatCurrency(price.price, 'EUR')}</div>
+                                    <div class="delivery">Доставка: ${price.deliveryTime}</div>
+                                    <div class="availability ${price.availability ? 'available' : 'unavailable'}">
+                                        ${price.availability ? 'В наличии' : 'Нет в наличии'}
+                                    </div>
+                                </div>
+                                <div class="supplier-actions">
+                                    <button class="btn btn-primary" onclick="window.errorCodesComponent.visitSupplier('${partNumber}', '${price.supplier}')">
+                                        <i class="fas fa-external-link-alt"></i>
+                                        Перейти к покупке
+                                    </button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // Close modal on outside click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.remove();
+            }
+        });
+    }
+
+    showPriceComparisonModal(partNumber, partName, comparison) {
+        const modal = document.createElement('div');
+        modal.className = 'price-comparison-modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Сравнение цен: ${partName}</h3>
+                    <button class="close-modal" onclick="this.closest('.price-comparison-modal').remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="price-comparison">
+                        ${comparison.prices.map((price, index) => `
+                            <div class="price-option ${index === 0 ? 'best-price' : ''}">
+                                <div class="supplier-info">
+                                    <h4>${price.supplier}</h4>
+                                    <p class="supplier-address">${price.supplierInfo.address}</p>
+                                    <p class="supplier-phone">${price.supplierInfo.phone}</p>
+                                </div>
+                                <div class="price-info">
+                                    <div class="price-value">${formatCurrency(price.price, 'EUR')}</div>
+                                    <div class="delivery-time">Доставка: ${price.deliveryTime}</div>
+                                    <div class="availability ${price.availability ? 'available' : 'unavailable'}">
+                                        ${price.availability ? 'В наличии' : 'Нет в наличии'}
+                                    </div>
+                                </div>
+                                <div class="price-actions">
+                                    <button class="btn btn-primary" onclick="window.errorCodesComponent.visitSupplier('${partNumber}', '${price.supplier}')">
+                                        <i class="fas fa-external-link-alt"></i>
+                                        Перейти к покупке
+                                    </button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="comparison-summary">
+                        <p><strong>Средняя цена:</strong> ${formatCurrency(comparison.averagePrice, 'EUR')}</p>
+                        <p><strong>Экономия:</strong> ${formatCurrency(comparison.mostExpensive.price - comparison.cheapest.price, 'EUR')}</p>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // Close modal on outside click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.remove();
+            }
+        });
+    }
+
+    visitSupplier(partNumber, supplierName) {
+        const supplier = this.priceScraper.suppliers[supplierName];
+        if (!supplier) {
+            this.showNotification('Информация о поставщике не найдена', 'error');
+            return;
+        }
+
+        // Open supplier website with part search
+        const searchUrl = `${supplier.searchUrl}${encodeURIComponent(partNumber)}`;
+        window.open(searchUrl, '_blank');
+        
+        this.showNotification(`Переход на сайт ${supplier.name}`, 'info');
+    }
+
+    redirectToPartsCatalog(partNumber) {
+        // Switch to parts section and search for the part
+        if (window.app && window.app.showSection) {
+            window.app.showSection('parts');
+            // Trigger search in parts section
+            setTimeout(() => {
+                const searchInput = document.getElementById('parts-search');
+                if (searchInput) {
+                    searchInput.value = partNumber;
+                    searchInput.dispatchEvent(new Event('input'));
+                }
+            }, 500);
+        }
+    }
+
+    showNotification(message, type) {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.innerHTML = `
+            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+            <span>${message}</span>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Auto remove after 3 seconds
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 3000);
     }
 }
